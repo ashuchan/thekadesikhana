@@ -9,26 +9,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.dev.backend.dao.MenuDao;
+import com.dev.backend.delegate.DatabaseDelegate;
 import com.dev.backend.dto.Menu;
 
 @Controller
 public class TDKMenuService {
 	
 	@Autowired
-	MenuDao menuDao;
+	private DatabaseDelegate delegate;
 	
 	@RequestMapping(value="/menu/today",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<Menu> getTodaysMenu() {
-		return menuDao.getTodaysMenu();
+		return delegate.getTodaysMenu();
 	}
 
-	public MenuDao getMenuDao() {
-		return menuDao;
+	public DatabaseDelegate getDelegate() {
+		return delegate;
 	}
 
-	public void setMenuDao(MenuDao menuDao) {
-		this.menuDao = menuDao;
+	public void setDelegate(DatabaseDelegate delegate) {
+		this.delegate = delegate;
 	}
 
 }

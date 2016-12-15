@@ -6,8 +6,6 @@ import java.util.Optional;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.context.annotation.Bean;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.dev.backend.dao.AbstractDao;
 import com.dev.backend.dao.MenuDao;
@@ -15,7 +13,6 @@ import com.dev.backend.dto.Menu;
 
 public class MenuDaoImpl extends AbstractDao implements MenuDao{
 	
-	@Transactional
 	@Override
 	public List<Menu> getMenuByDate(Date date) {
 		System.out.println("Fetching menu for "+ date);
