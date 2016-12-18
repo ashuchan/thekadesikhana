@@ -23,6 +23,10 @@ public class Cuisine {
 	@JsonProperty
 	private String name;
 	
+	@Column(name="name")
+	@JsonProperty
+	private String type;
+	
 	public int getId() {
 		return id;
 	}
@@ -37,5 +41,13 @@ public class Cuisine {
 	
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }
