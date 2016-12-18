@@ -23,7 +23,7 @@ public class Cuisine {
 	@JsonProperty
 	private String name;
 	
-	@Column(name="name")
+	@Column(name="type")
 	@JsonProperty
 	private String type;
 	
