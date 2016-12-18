@@ -14,12 +14,12 @@
  
     <context:annotation-config />
     
-     <http auto-config='true'>
+ <!--    <http auto-config='true'>
       <intercept-url pattern="/secured/*" access="ROLE_USER" />
     </http>
        
     <authentication-manager>
       <authentication-provider ref="customAuthenticationProvider"/>
     </authentication-manager>   
-
+-->
 </beans>
