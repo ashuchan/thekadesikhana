@@ -7,6 +7,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.dev.backend.dao.AbstractDao;
 import com.dev.backend.dao.UserDao;
+import com.dev.backend.dto.Token;
 import com.dev.backend.dto.User;
 import com.dev.backend.dto.UserActivity;
 import com.dev.backend.dto.UserAddress;
@@ -44,5 +45,15 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
 		Criteria criteria = getSession().createCriteria(UserActivity.class);
 		criteria.add(Restrictions.eq("user_id", userId));
 		return criteria.list();
+	}
+
+	@Override
+	public Token getUserToken(String userId) {
+		return null;
+	}
+
+	@Override
+	public void refreshTokens(String userId) {
+		
 	}
 }

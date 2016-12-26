@@ -19,4 +19,5 @@ public interface DatabaseDelegate {
 	public List<UserAddress> getUserAddress (String userId);
 
 	public List<UserActivity> getUserActivity(String userId);
+	
 }

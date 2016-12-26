@@ -2,18 +2,29 @@ package com.dev.backend.dto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-//@Entity
-//@Table(name="token")
+@Entity
+@Table(name="token")
 public class Token {
 	
+	@Id
+	@Column(name="id")
+	@GeneratedValue
+	private int id;
+	
+	@OneToOne
+	@JoinColumn(name="user_id")
 	private User user;
 	
-//	@Column(name="acess_token")
+	@Column(name="acess_token")
 	private String acessToken;
 	
-//	@Column(name="refresh_token")
+	@Column(name="refresh_token")
 	private String refreshToken;
 
 	public User getUser() {

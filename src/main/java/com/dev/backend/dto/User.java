@@ -3,6 +3,8 @@ package com.dev.backend.dto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -27,6 +29,10 @@ public class User {
 	
 	@Column(name="referral_code")
 	private String referralCode;
+	
+	@OneToOne
+	@JoinColumn(name="user_id")
+	private Token accessTokens;
 
 	public String getUserId() {
 		return userId;
@@ -74,6 +80,14 @@ public class User {
 
 	public void setReferralCode(String referralCode) {
 		this.referralCode = referralCode;
+	}
+
+	public Token getAccessTokens() {
+		return accessTokens;
+	}
+
+	public void setAccessTokens(Token accessTokens) {
+		this.accessTokens = accessTokens;
 	}
 
 }
