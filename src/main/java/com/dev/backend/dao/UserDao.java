@@ -1,6 +1,18 @@
 package com.dev.backend.dao;
 
-public interface UserDao {
+import java.util.List;
 
+import com.dev.backend.dto.User;
+import com.dev.backend.dto.UserActivity;
+import com.dev.backend.dto.UserAddress;
+import com.dev.backend.dto.Wallet;
+
+public interface UserDao {
+	public User getUser(String userId);
 	
+	public Wallet getUserWallet(String userId);
+	
+	public List <UserAddress> getUserAddress(String userId);
+	
+	public List <UserActivity> getUserActivity(String userId);
 }
