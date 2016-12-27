@@ -20,4 +20,6 @@ public interface UserDao {
 	public Token getUserToken(String userId);
 	
 	public void refreshTokens(String userId);
+
+	public boolean createUser(User user);
 }

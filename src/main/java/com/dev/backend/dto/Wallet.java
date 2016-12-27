@@ -8,8 +8,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name="wallet")
 public class Wallet {
-	@Id
-	@Column(name="user_id")
+	
+	@Column(name="phone")
 	private String userId;
 	
 	@Id

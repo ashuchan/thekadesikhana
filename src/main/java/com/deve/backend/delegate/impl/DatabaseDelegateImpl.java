@@ -28,6 +28,11 @@ public class DatabaseDelegateImpl implements DatabaseDelegate {
 	public List<Menu> getTodaysMenu() {
 		return menuDao.getTodaysMenu();
 	}
+	
+	@Override
+	public boolean createUser(User user) {
+		return userDao.createUser(user);
+	}
 
 	@Override
 	public Wallet getUserWallet(String userId) {

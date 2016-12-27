@@ -5,18 +5,18 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity
-@Table(name="userAddress")
+/*@Entity
+@Table(name="userAddress")*/
 public class UserAddress {
-	@Id
-	@Column(name="user_id")
+	/*@Id
+	@Column(name="user_id")*/
 	private String userId;
 	
-	@Id
-	@Column(name="address_id")
+	/*@Id
+	@Column(name="address_id")*/
 	private String addressId;
 
-	@Column(name="wallet_balance")
+//	@Column(name="wallet_balance")
 	private String address;
 
 	public String getUserId() {

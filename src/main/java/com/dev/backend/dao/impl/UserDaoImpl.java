@@ -49,11 +49,42 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
 
 	@Override
 	public Token getUserToken(String userId) {
-		return null;
+		System.out.println("Fetching User Token for user id: "+ userId);
+		Criteria criteria = getSession().createCriteria(Token.class);
+		criteria.add(Restrictions.eq("user_id", userId));
+		return (Token) criteria.list();
 	}
 
 	@Override
 	public void refreshTokens(String userId) {
 		
+	}
+
+	@Override
+	public boolean createUser(User user) {
+		try{
+			getSession().save(user);
+			getSession().save(user.getAccessTokens());
+			return createUserWallet(user);
+		} catch( Exception e) {
+			//TODO: Log
+		}
+		return false;
+	}
+
+
+	private boolean createUserWallet(User user){
+		Wallet wallet = new Wallet();
+		wallet.setWalletId(user.getMobileNumber());
+		wallet.setUserId(user.getMobileNumber());
+		wallet.setPromotionalBalance(0);
+		wallet.setWalletBalance(0);
+		try{
+			getSession().save(wallet);
+			return true;
+		} catch( Exception e) {
+			//TODO: Log
+		}
+		return false;
 	}
 }

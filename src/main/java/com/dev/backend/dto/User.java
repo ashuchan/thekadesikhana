@@ -1,5 +1,7 @@
 package com.dev.backend.dto;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,39 +9,48 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name="user")
 public class User {
 	
-	@Id
-	@Column(name="user_id")
-	private String userId;
-	
 	@Column(name="name")
+	@JsonProperty
 	private String name;
 	
 	@Column(name="email")
+	@JsonProperty
 	private String email;
 	
+	@Id
 	@Column(name="phone")
+	@JsonProperty
 	private String mobileNumber;
 	
 	@Column(name="gender")
+	@JsonProperty
 	private String gender;
 	
 	@Column(name="referral_code")
+	@JsonProperty
 	private String referralCode;
 	
 	@OneToOne
 	@JoinColumn(name="user_id")
+	@JsonProperty
 	private Token accessTokens;
 
-	public String getUserId() {
-		return userId;
+	@JoinColumn(name="dob")
+	@JsonProperty
+	private Date dob;
+	
+	public Date getDob() {
+		return dob;
 	}
 
-	public void setUserId(String id) {
-		this.userId = id;
+	public void setDob(Date dob) {
+		this.dob = dob;
 	}
 
 	public String getName() {
