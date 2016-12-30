@@ -1,5 +1,7 @@
 package com.dev.backend.dto;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,17 +15,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name="tokens")
-public class Token {
+public class Token implements Serializable{
 
 	@Id
-	@Column(name="id")
-	@GeneratedValue
-	@JsonIgnore
-	private int id;
-	
 	@OneToOne
 	@JoinColumn(name="phone")
-	@JsonProperty
+	@JsonIgnore
 	private User user;
 	
 	@Column(name="access_token")

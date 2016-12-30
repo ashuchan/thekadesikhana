@@ -63,24 +63,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
 	@Override
 	public boolean createUser(User user) {
 		try{
-			getSession().save(user);
-			getSession().save(user.getAccessTokens());
-			return createUserWallet(user);
-		} catch( Exception e) {
-			//TODO: Log
-		}
-		return false;
-	}
-
-
-	private boolean createUserWallet(User user){
-		Wallet wallet = new Wallet();
-		wallet.setWalletId(user.getPhone());
-		wallet.setUserId(user.getPhone());
-		wallet.setPromotionalBalance(0);
-		wallet.setWalletBalance(0);
-		try{
-			getSession().save(wallet);
+			getSession().saveOrUpdate(user);
 			return true;
 		} catch( Exception e) {
 			//TODO: Log

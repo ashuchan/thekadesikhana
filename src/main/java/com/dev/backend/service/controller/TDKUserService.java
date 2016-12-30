@@ -45,7 +45,7 @@ public class TDKUserService {
 		return delegate.getUserActivity(userId);
 	}
 	
-	@RequestMapping(value="/user", method=RequestMethod.POST)
+	@RequestMapping(value="/user", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody User saveUser(@RequestBody User user) {
 		/*
 		 * Generate new UserId

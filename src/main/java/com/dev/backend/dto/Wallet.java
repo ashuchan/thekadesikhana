@@ -1,20 +1,25 @@
 package com.dev.backend.dto;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="wallet")
-public class Wallet {
-	
-	@Column(name="phone")
-	private String userId;
+public class Wallet implements Serializable{
 	
 	@Id
-	@Column(name="wallet_id")
-	private String walletId;
+	@OneToOne
+	@JoinColumn(name="phone")
+	@JsonIgnore
+	private User user;
 	
 	@Column(name="wallet_balance")
 	private int walletBalance;
@@ -22,20 +27,12 @@ public class Wallet {
 	@Column(name="promotional_balance")
 	private int promotionalBalance;
 
-	public String getUserId() {
-		return userId;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
-	public String getWalletId() {
-		return walletId;
-	}
-
-	public void setWalletId(String walletId) {
-		this.walletId = walletId;
+	public void setUser(User userId) {
+		this.user = userId;
 	}
 
 	public int getWalletBalance() {

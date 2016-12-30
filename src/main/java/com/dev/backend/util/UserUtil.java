@@ -1,11 +1,12 @@
 package com.dev.backend.util;
 
 import java.sql.Timestamp;
-import java.util.Date;
+import java.sql.Date;
 import java.util.UUID;
 
 import com.dev.backend.dto.Token;
 import com.dev.backend.dto.User;
+import com.dev.backend.dto.Wallet;
 
 public class UserUtil {
 
@@ -37,6 +38,9 @@ public class UserUtil {
 		// TODO Auto-generated method stub
 		generateReferralCode(user);
 		generateTokens(user);
+		Wallet wallet = new Wallet();
+		wallet.setUser(user);
+		user.setWallet(wallet);
 	}
 
 	private static void generateTokens(User user) {

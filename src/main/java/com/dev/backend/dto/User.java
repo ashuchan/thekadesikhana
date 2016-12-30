@@ -1,19 +1,23 @@
 package com.dev.backend.dto;
 
+import java.io.Serializable;
 import java.sql.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name="user")
-public class User {
+public class User implements Serializable{
 	
 	@Column(name="name")
 	@JsonProperty
@@ -36,7 +40,7 @@ public class User {
 	@JsonProperty
 	private String referralCode;
 	
-	@OneToOne
+	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL,orphanRemoval=true)
 	@JoinColumn(name="phone")
 	@JsonProperty
 	private Token accessTokens;
@@ -44,6 +48,10 @@ public class User {
 	@JoinColumn(name="dob")
 	@JsonProperty
 	private Date dob;
+	
+	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL,orphanRemoval=true)
+	@JoinColumn(name="phone")
+	private Wallet wallet;
 	
 	public Date getDob() {
 		return dob;
@@ -89,6 +97,7 @@ public class User {
 		return referralCode;
 	}
 
+	@JsonIgnore
 	public void setReferralCode(String referralCode) {
 		this.referralCode = referralCode;
 	}
@@ -97,8 +106,17 @@ public class User {
 		return accessTokens;
 	}
 
+	@JsonIgnore
 	public void setAccessTokens(Token accessTokens) {
 		this.accessTokens = accessTokens;
+	}
+
+	public Wallet getWallet() {
+		return wallet;
+	}
+
+	public void setWallet(Wallet wallet) {
+		this.wallet = wallet;
 	}
 
 }
