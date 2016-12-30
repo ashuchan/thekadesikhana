@@ -13,6 +13,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -21,13 +22,12 @@ import com.dev.backend.dto.User;
 
 public class AuthenticationFilter implements Filter {
 
+	@Autowired
 	private DatabaseDelegate delegate;
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		delegate = WebApplicationContextUtils.getRequiredWebApplicationContext(
-				filterConfig.getServletContext()).getBean(
-				DatabaseDelegate.class);
+		
 	}
 
 	@Override
@@ -61,6 +61,14 @@ public class AuthenticationFilter implements Filter {
 	@Override
 	public void destroy() {
 
+	}
+
+	public DatabaseDelegate getDelegate() {
+		return delegate;
+	}
+
+	public void setDelegate(DatabaseDelegate delegate) {
+		this.delegate = delegate;
 	}
 
 }

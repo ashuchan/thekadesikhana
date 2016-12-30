@@ -1,6 +1,6 @@
 package com.dev.backend.dto;
 
-import java.util.Date;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,7 +26,7 @@ public class User {
 	@Id
 	@Column(name="phone")
 	@JsonProperty
-	private String mobileNumber;
+	private String phone;
 	
 	@Column(name="gender")
 	@JsonProperty
@@ -37,7 +37,7 @@ public class User {
 	private String referralCode;
 	
 	@OneToOne
-	@JoinColumn(name="user_id")
+	@JoinColumn(name="phone")
 	@JsonProperty
 	private Token accessTokens;
 
@@ -69,12 +69,12 @@ public class User {
 		this.email = email;
 	}
 
-	public String getMobileNumber() {
-		return mobileNumber;
+	public String getPhone() {
+		return phone;
 	}
 
-	public void setMobileNumber(String mobileNumber) {
-		this.mobileNumber = mobileNumber;
+	public void setPhone(String mobileNumber) {
+		this.phone = mobileNumber;
 	}
 
 	public String getGender() {

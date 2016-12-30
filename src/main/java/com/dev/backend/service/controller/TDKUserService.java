@@ -46,7 +46,7 @@ public class TDKUserService {
 	}
 	
 	@RequestMapping(value="/user", method=RequestMethod.POST)
-	public void saveUser(@RequestBody User user) {
+	public @ResponseBody User saveUser(@RequestBody User user) {
 		/*
 		 * Generate new UserId
 		 * Generate ReferralCode
@@ -55,6 +55,7 @@ public class TDKUserService {
 		 */
 		UserUtil.generateUserAccessInfo(user);
 		delegate.createUser(user);
+		return user;
 	}
 
 	public DatabaseDelegate getDelegate() {

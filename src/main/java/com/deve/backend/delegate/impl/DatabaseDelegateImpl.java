@@ -30,21 +30,25 @@ public class DatabaseDelegateImpl implements DatabaseDelegate {
 	}
 	
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED)
 	public boolean createUser(User user) {
 		return userDao.createUser(user);
 	}
 
 	@Override
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public Wallet getUserWallet(String userId) {
 		return userDao.getUserWallet(userId);
 	}
 
 	@Override
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<UserAddress> getUserAddress(String userId) {
 		return userDao.getUserAddress(userId);
 	}
 	
 	@Override
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<UserActivity> getUserActivity(String userId) {
 		return userDao.getUserActivity(userId);
 	}
@@ -67,6 +71,7 @@ public class DatabaseDelegateImpl implements DatabaseDelegate {
 	}
 
 	@Override
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public User getUser(String userId) {
 		return userDao.getUser(userId);
 	}

@@ -19,8 +19,8 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
 	public User getUser(String userId) {
 		System.out.println("Fetching user for id: "+ userId);
 		Criteria criteria = getSession().createCriteria(User.class);
-		criteria.add(Restrictions.eq("user_id", userId));
-		return (User) criteria.list();
+		criteria.add(Restrictions.eq("phone", userId));
+		return (User) criteria.uniqueResult();
 	}
 
 	@Override
@@ -75,8 +75,8 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
 
 	private boolean createUserWallet(User user){
 		Wallet wallet = new Wallet();
-		wallet.setWalletId(user.getMobileNumber());
-		wallet.setUserId(user.getMobileNumber());
+		wallet.setWalletId(user.getPhone());
+		wallet.setUserId(user.getPhone());
 		wallet.setPromotionalBalance(0);
 		wallet.setWalletBalance(0);
 		try{

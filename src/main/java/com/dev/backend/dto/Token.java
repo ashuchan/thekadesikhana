@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table(name="token")
+@Table(name="tokens")
 public class Token {
 
 	@Id
@@ -26,7 +26,7 @@ public class Token {
 	@JsonProperty
 	private User user;
 	
-	@Column(name="acess_token")
+	@Column(name="access_token")
 	@JsonProperty
 	private String acessToken;
 	

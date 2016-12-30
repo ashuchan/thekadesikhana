@@ -18,7 +18,7 @@ public class UserUtil {
 		 * last two digits of currenttimestamp
 		 */
 		String code = "";
-		code += user.getMobileNumber().charAt(user.getMobileNumber().length()-1);
+		code += user.getPhone().charAt(user.getPhone().length()-1);
 		code += user.getEmail().substring(0, 2);
 		Date dob = user.getDob();
 		
@@ -29,7 +29,7 @@ public class UserUtil {
 		
 		code +=  System.currentTimeMillis() % 100;
 		//TODO: Log
-		System.out.println("System Generated Referal Code: " + code + " for User: " + user.getName() + " UserId: " + user.getMobileNumber());
+		System.out.println("System Generated Referal Code: " + code + " for User: " + user.getName() + " UserId: " + user.getPhone());
 		user.setReferralCode(code);
 	}
 

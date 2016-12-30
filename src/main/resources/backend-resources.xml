@@ -11,4 +11,5 @@
  
     <context:annotation-config />
     
+    <bean name="userFilter" class="com.dev.backend.filter.AuthenticationFilter"/>
 </beans>
