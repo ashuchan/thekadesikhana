@@ -22,4 +22,6 @@ public interface UserDao {
 	public void refreshTokens(String userId);
 
 	public boolean createUser(User user);
+
+	public User getUserByRefereeCode(String refereeCode);
 }

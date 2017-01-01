@@ -3,25 +3,30 @@ package com.dev.backend.dto;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@Entity
+@Table(name="order_item")
 public class OrderItem implements Serializable {
 
 	@Id
-	@OneToOne
-	@JoinColumn(name="orderId")
+	@ManyToOne
+	@JoinColumn(name="order_id")
 	@JsonIgnore
 	private Order order;
 	
 	@Id
 	@OneToOne
-	@JoinColumn(name="id")
-	@JsonIgnore
+	@JoinColumn(name="menu_id")
+	@JsonProperty
 	private Menu menu;
 	
 	@Column(name="qty")
@@ -51,6 +56,5 @@ public class OrderItem implements Serializable {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	
 	
 }

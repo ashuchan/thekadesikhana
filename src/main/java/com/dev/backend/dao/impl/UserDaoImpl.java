@@ -70,4 +70,12 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
 		}
 		return false;
 	}
+
+	@Override
+	public User getUserByRefereeCode(String refereeCode) {
+		System.out.println("Fetching User with referralCode: "+ refereeCode);
+		Criteria criteria = getSession().createCriteria(User.class);
+		criteria.add(Restrictions.eq("referralCode", refereeCode));
+		return (User) criteria.uniqueResult();
+	}
 }

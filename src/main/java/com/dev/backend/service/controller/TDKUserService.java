@@ -49,9 +49,17 @@ public class TDKUserService extends TDKServices {
 		 * Generate ReferralCode
 		 * Generate Tokens
 		 * Update Database
+		 * Referral Transaction
 		 */
 		UserUtil.generateUserAccessInfo(user);
-		delegate.createUser(user);
+		if(delegate.createUser(user)) {
+			/*
+			 * Return Success created Message
+			 */
+		}
+		if(!delegate.createReferralCashBack(user)) {
+			//Log message
+		}
 		return user;
 	}
 

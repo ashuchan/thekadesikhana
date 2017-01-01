@@ -4,15 +4,21 @@ import java.sql.Date;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@Entity
+@Table(name="order")
 public class Order {
+
 	public enum OrderStatus {
 		ACCEPTED, IN_KITCHEN, PACKAGING, OUT_FOR_DELIVERY, DELIVERED, CANCELLED
 	}
@@ -22,7 +28,7 @@ public class Order {
 	@JsonProperty
 	private String orderId;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name="phone")
 	@JsonIgnore
 	private User user;
@@ -37,12 +43,12 @@ public class Order {
 	
 	@OneToOne
 	@JoinColumn(name="address_id")
-	@JsonIgnore
+	@JsonProperty
 	private UserAddress address;
 	
 	@Column(name="order_status")
 	@JsonProperty
-	private OrderStatus status;
+	private String status;
 	
 	@Column(name="special_request")
 	@JsonProperty
@@ -50,7 +56,7 @@ public class Order {
 	
 	@OneToMany
 	@JoinColumn(name="order_id")
-	@JsonIgnore
+	@JsonProperty
 	private List<OrderItem> orderItems;
 
 	public String getOrderId() {
@@ -93,12 +99,12 @@ public class Order {
 		this.address = address;
 	}
 
-	public OrderStatus getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
 	public void setStatus(OrderStatus status) {
-		this.status = status;
+		this.status = status.name();
 	}
 
 	public String getSpecialRequest() {

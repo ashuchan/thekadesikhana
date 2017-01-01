@@ -40,6 +40,10 @@ public class User implements Serializable{
 	@JsonProperty
 	private String referralCode;
 	
+	@Column(name="referee_code")
+	@JsonProperty
+	private String refereeCode;
+	
 	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL,orphanRemoval=true)
 	@JoinColumn(name="phone")
 	@JsonProperty
@@ -117,6 +121,14 @@ public class User implements Serializable{
 
 	public void setWallet(Wallet wallet) {
 		this.wallet = wallet;
+	}
+
+	public String getRefereeCode() {
+		return refereeCode;
+	}
+
+	public void setRefereeCode(String refereeCode) {
+		this.refereeCode = refereeCode;
 	}
 
 }
