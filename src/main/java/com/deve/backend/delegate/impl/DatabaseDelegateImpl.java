@@ -7,9 +7,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dev.backend.dao.MenuDao;
+import com.dev.backend.dao.OrderDao;
 import com.dev.backend.dao.UserDao;
 import com.dev.backend.delegate.DatabaseDelegate;
 import com.dev.backend.dto.Menu;
+import com.dev.backend.dto.Order;
 import com.dev.backend.dto.User;
 import com.dev.backend.dto.UserActivity;
 import com.dev.backend.dto.UserAddress;
@@ -23,6 +25,9 @@ public class DatabaseDelegateImpl implements DatabaseDelegate {
 	@Autowired
 	UserDao userDao;
 
+	@Autowired
+	OrderDao orderDao;
+	
 	@Override
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Menu> getTodaysMenu() {
@@ -52,7 +57,26 @@ public class DatabaseDelegateImpl implements DatabaseDelegate {
 	public List<UserActivity> getUserActivity(String userId) {
 		return userDao.getUserActivity(userId);
 	}
+	
+	@Override
+	public Order getOrder(String orderId) {
+		return orderDao.getOrder(orderId);
+	}
 
+	@Override
+	public List<Order> getOrdersByCustomer(String userId) {
+		return orderDao.getOrdersByCustomer(userId);
+	}
+	
+	@Override
+	public boolean createOrder(Order order) {
+		return orderDao.createOrder(order);
+	}
+	
+	@Override
+	public String updateOrderStatus(String orderId, String status) {
+		return orderDao.updateOrderStatus(orderId, status);
+	}
 	
 	public MenuDao getMenuDao() {
 		return menuDao;

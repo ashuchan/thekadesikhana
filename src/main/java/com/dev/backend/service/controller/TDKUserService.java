@@ -20,10 +20,7 @@ import com.dev.backend.dto.Wallet;
 import com.dev.backend.util.UserUtil;
 
 @Controller
-public class TDKUserService {
-
-	@Autowired
-	private DatabaseDelegate delegate;
+public class TDKUserService extends TDKServices {
 
 	@RequestMapping(value="/user/{userId}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody User getUser(@PathVariable String userId) {
@@ -58,11 +55,4 @@ public class TDKUserService {
 		return user;
 	}
 
-	public DatabaseDelegate getDelegate() {
-		return delegate;
-	}
-
-	public void setDelegate(DatabaseDelegate delegate) {
-		this.delegate = delegate;
-	}
 }

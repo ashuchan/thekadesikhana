@@ -13,22 +13,11 @@ import com.dev.backend.delegate.DatabaseDelegate;
 import com.dev.backend.dto.Menu;
 
 @Controller
-public class TDKMenuService {
-	
-	@Autowired
-	private DatabaseDelegate delegate;
+public class TDKMenuService extends TDKServices{
 	
 	@RequestMapping(value="/menu/today",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<Menu> getTodaysMenu() {
 		return delegate.getTodaysMenu();
-	}
-
-	public DatabaseDelegate getDelegate() {
-		return delegate;
-	}
-
-	public void setDelegate(DatabaseDelegate delegate) {
-		this.delegate = delegate;
 	}
 
 }
