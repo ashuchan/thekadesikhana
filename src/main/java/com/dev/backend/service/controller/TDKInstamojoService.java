@@ -1,50 +1,75 @@
 package com.dev.backend.service.controller;
 
-/*
- * Sample Request
- * 
- * curl https://www.instamojo.com/api/1.1/payment-requests/ \
-  --header "X-Api-Key: d82016f839e13cd0a79afc0ef5b288b3" \
-  --header "X-Auth-Token: 3827881f669c11e8dad8a023fd1108c2" \
-  --data "allow_repeated_payments=False
-  &amount=2500&buyer_name=John+Doe&purpose=FIFA+16
-  &redirect_url=http%3A%2F%2Fwww.example.com%2Fredirect%2F
-  &phone=9999999999
-  &send_email=True
-  &webhook=http%3A%2F%2Fwww.example.com%2Fwebhook%2F
-  &send_sms=True&email=foo%40example.com"
- * 
- * Sample Response
- * {
-    "payment_request": {
-        "id": "d66cb29dd059482e8072999f995c4eef",
-        "phone": "+919999999999",
-        "email": "foo@example.com",
-        "buyer_name": "John Doe",
-        "amount": "2500",
-        "purpose": "FIFA 16",
-        "status": "Pending",
-        "send_sms": true,
-        "send_email": true,
-        "sms_status": "Pending",
-        "email_status": "Pending",
-        "shorturl": null,
-        "longurl": "https://www.instamojo.com/@ashwch/d66cb29dd059482e8072999f995c4eef/",
-        "redirect_url": "http://www.example.com/redirect/",
-        "webhook": "http://www.example.com/webhook/",
-        "created_at": "2015-10-07T21:36:34.665Z",
-        "modified_at": "2015-10-07T21:36:34.665Z",
-        "allow_repeated_payments": false
-    },
-    "success": true
-}
+import java.util.HashMap;
+import java.util.Map;
 
- */
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.client.RestTemplate;
+
+import com.dev.backend.to.InstamojoAccessTokenTO;
+import com.dev.backend.to.InstamojoOrderResponseTO;
+import com.dev.backend.to.InstamojoPaymentResponseTO;
+import com.dev.backend.to.InstamojoPaymentTO;
+import com.dev.backend.util.InstamojoConstants;
+
 public class TDKInstamojoService {
 
-	private String accessToken = "cd7bd4d4307f12059aabe70c806990a0";
+	private static String javaClientId = "QmzoZUaVetzKTuMcOdGw4S7LgZxwRuDihqzT3BW0";
+
+	private static String javaClientSecret = "suBJDVFXQTVxZ2C7FgMqzIneuJFoU34abRYWh"
+			+ "9HeF2nJhhK62LgCiyaCRxqSueusQSX0NyD5UYstyI2gj7G5gr5bQ9DjDvUKVPeCuYkd7"
+			+ "e1A6UEUNEVjUgOwrDLxY06a";
+
+	private static String clientId = "euaipxFmcumKSPHpA6DhDagcizEHhaVgvpKwqW2";
+
+	private static String clientSercret = "yXalaUv1v5EZFKPIoGqRr6y3dYziwVSFWXVQp"
+			+ "PgflVedBLZEbmq0gpEiGO9riFDW1LroDZqjhJzYi9PsxIWqGHVdHsQVJNB1"
+			+ "hEOnWbAq562ieVxVJ3anTvlmvgDUHped";
+
+	public static InstamojoAccessTokenTO generateAccessTokens() {
+		Map<String, String> requestMap = new HashMap<String, String>();
+		requestMap.put(InstamojoConstants.CLIENT_ID_KEY, javaClientId);
+		requestMap.put(InstamojoConstants.CLIENT_SALT_KEY, javaClientSecret);
+		requestMap.put(InstamojoConstants.GRANT_TYPE_KEY,
+				InstamojoConstants.GRANT_TYPE_VALUE);
+		RestTemplate template = new RestTemplate();
+		InstamojoAccessTokenTO accessTokens = template.postForObject(
+				InstamojoConstants.test_token_URL, requestMap,
+				InstamojoAccessTokenTO.class);
+		return accessTokens;
+	}
+
+	public static InstamojoPaymentResponseTO createPayment(
+			InstamojoPaymentTO paymentRequest) {
+		RestTemplate template = new RestTemplate();
+		InstamojoPaymentResponseTO response = template.postForObject(
+				InstamojoConstants.PAYMENT_API_URL, paymentRequest,
+				InstamojoPaymentResponseTO.class);
+		return response;
+	}
+
+	public static String createOrder(String paymentId) {
+		Map<String, String> requestMap = new HashMap<String, String>();
+		requestMap.put("id", paymentId);
+		RestTemplate template = new RestTemplate();
+		InstamojoOrderResponseTO response = template.postForObject(
+				InstamojoConstants.ORDER_API_URL, requestMap,
+				InstamojoOrderResponseTO.class);
+		return response.getOrder_id();
+	}
 	
-	private String salt = "0b1110c5d2bc457abd35e10758c45a9e";
-	
-	
+	@RequestMapping(value="/instamojo/webhook",method=RequestMethod.POST)
+	public void instamojoWebhook(HttpServletRequest request, HttpServletResponse response) {
+		/*
+		 * Extract payload from response
+		 * Parse payment Status
+		 * Update in database
+		 * Client poll should get updated
+		 */
+	}
+
 }

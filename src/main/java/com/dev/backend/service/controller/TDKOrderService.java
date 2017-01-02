@@ -30,9 +30,12 @@ public class TDKOrderService extends TDKServices {
 	@RequestMapping(value="/order", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Order createOrder(@RequestBody Order order) {
 		/*
-		 * Generate new Order
+		 * Create new payment with instamojo
+		 * Create new order
+		 * Generate new Order with order id from instamojo
+		 * create transaction with payment id
 		 * Update Database
-		 * Generate OrderItems
+		 * return object with payment details
 		 */
 		//UserUtil.generateUserAccessInfo(user);
 		delegate.createOrder(order);
