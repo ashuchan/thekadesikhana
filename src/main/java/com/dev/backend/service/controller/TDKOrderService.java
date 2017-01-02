@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dev.backend.delegate.DatabaseDelegate;
 import com.dev.backend.dto.Order;
+import com.dev.backend.to.OrderTransactionTO;
 import com.dev.backend.util.UserUtil;
 
 @Controller
@@ -28,7 +29,7 @@ public class TDKOrderService extends TDKServices {
 	}
 	
 	@RequestMapping(value="/order", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Order createOrder(@RequestBody Order order) {
+	public @ResponseBody Order createOrder(@RequestBody OrderTransactionTO order) {
 		/*
 		 * Create new payment with instamojo
 		 * Create new order
@@ -38,9 +39,9 @@ public class TDKOrderService extends TDKServices {
 		 * return object with payment details
 		 */
 		//UserUtil.generateUserAccessInfo(user);
-		delegate.createOrder(order);
+		//delegate.createOrder(order);
 		
-		return order;
+		return null;
 	}
 	
 	@RequestMapping(value="/order/status", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)

@@ -9,8 +9,10 @@ public class OrderTransactionTO {
 	
 	public class MenuItem {
 		
+		@JsonProperty
 		private String menuItem;
 		
+		@JsonProperty
 		private int quantity;
 
 		public String getMenuItem() {
