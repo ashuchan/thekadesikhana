@@ -29,10 +29,6 @@ public class Wallet implements Serializable{
 	@Column(name="promotional_balance")
 	private int promotionalBalance;
 	
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="wallet_id")
-	private int walletId;
-
 	public User getUser() {
 		return user;
 	}
@@ -56,12 +52,5 @@ public class Wallet implements Serializable{
 	public void setPromotionalBalance(int promotionalBalance) {
 		this.promotionalBalance = promotionalBalance;
 	}
-
-	public int getWalletId() {
-		return walletId;
-	}
-
-	public void setWalletId(int walletId) {
-		this.walletId = walletId;
-	}
+	
 }

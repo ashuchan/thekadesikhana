@@ -42,8 +42,8 @@ public class TDKOrderService extends TDKServices {
 		return delegate.getOrdersByCustomer(userId);
 	}
 	
-	@RequestMapping(value="/order", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PaymentGatewayTO createOrder(@RequestBody OrderTransactionTO order) {
+	@RequestMapping(value="/order/wallet", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody PaymentGatewayTO createOrderByWallet(@RequestBody OrderTransactionTO order) {
 		/*
 		 * Create new payment with instamojo
 		 * Create new order
@@ -52,8 +52,6 @@ public class TDKOrderService extends TDKServices {
 		 * Update Database
 		 * return object with payment details
 		 */
-		//UserUtil.generateUserAccessInfo(user);
-		//delegate.createOrder(order);
 		User user = delegate.getUser(order.getUserId());
 		UserAddress address = delegate.getAddressById(order.getAddressId());
 		List<OrderItem> menuItems = new ArrayList<OrderItem>();
@@ -64,9 +62,11 @@ public class TDKOrderService extends TDKServices {
 		for(OrderItem m:menuItems) {
 			totalPrice+=m.getMenu().getPrice()*m.getQuantity();
 		}
+		
 		InstamojoPaymentTO paymentRequest = new InstamojoPaymentTO(""+totalPrice, user.getName(), user.getEmail(), user.getPhone());
 		InstamojoPaymentResponseTO response = TDKInstamojoService.createPayment(paymentRequest);
 		String orderId = TDKInstamojoService.createOrder(response.getId());
+		
 		Order orderObj = new Order();
 		orderObj.setAddress(address);
 		orderObj.setOrderDate(new Date(Instant.now().toEpochMilli()));
@@ -76,6 +76,7 @@ public class TDKOrderService extends TDKServices {
 		orderObj.setStatus(OrderStatus.ACCEPTED);
 		menuItems.forEach(m->m.setOrder(orderObj));
 		orderObj.setOrderItems(menuItems);
+		
 		Transaction transaction = new Transaction();
 		transaction.setAmount(totalPrice);
 		transaction.setOrder(orderObj);
@@ -83,6 +84,55 @@ public class TDKOrderService extends TDKServices {
 		transaction.setTransactionId(response.getId());
 		transaction.setTransactionCategory(TransactionCategory.GATEWAY);
 		transaction.setTransactionType(TransactionType.DEBIT);
+		
+		delegate.createOrder(orderObj,transaction);
+		PaymentGatewayTO gatewayTO = new PaymentGatewayTO(orderId, response.getId(), response.getLongurl());
+		return gatewayTO;
+	}
+	
+	@RequestMapping(value="/order/gateway", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody PaymentGatewayTO createOrder(@RequestBody OrderTransactionTO order) {
+		/*
+		 * Create new payment with instamojo
+		 * Create new order
+		 * Generate new Order with order id from instamojo
+		 * create transaction with payment id
+		 * Update Database
+		 * return object with payment details
+		 */
+		User user = delegate.getUser(order.getUserId());
+		UserAddress address = delegate.getAddressById(order.getAddressId());
+		List<OrderItem> menuItems = new ArrayList<OrderItem>();
+		order.getMenuItems().forEach(
+				m -> menuItems.add(new OrderItem(delegate.getMenuItemById(m
+						.getMenuItem()), m.getQuantity())));
+		int totalPrice = 0;
+		for(OrderItem m:menuItems) {
+			totalPrice+=m.getMenu().getPrice()*m.getQuantity();
+		}
+		
+		InstamojoPaymentTO paymentRequest = new InstamojoPaymentTO(""+totalPrice, user.getName(), user.getEmail(), user.getPhone());
+		InstamojoPaymentResponseTO response = TDKInstamojoService.createPayment(paymentRequest);
+		String orderId = TDKInstamojoService.createOrder(response.getId());
+		
+		Order orderObj = new Order();
+		orderObj.setAddress(address);
+		orderObj.setOrderDate(new Date(Instant.now().toEpochMilli()));
+		orderObj.setOrderId(orderId);
+		orderObj.setTotalPrice(totalPrice);
+		orderObj.setUser(user);
+		orderObj.setStatus(OrderStatus.ACCEPTED);
+		menuItems.forEach(m->m.setOrder(orderObj));
+		orderObj.setOrderItems(menuItems);
+		
+		Transaction transaction = new Transaction();
+		transaction.setAmount(totalPrice);
+		transaction.setOrder(orderObj);
+		transaction.setWallet(user.getPhone());
+		transaction.setTransactionId(response.getId());
+		transaction.setTransactionCategory(TransactionCategory.GATEWAY);
+		transaction.setTransactionType(TransactionType.DEBIT);
+		
 		delegate.createOrder(orderObj,transaction);
 		PaymentGatewayTO gatewayTO = new PaymentGatewayTO(orderId, response.getId(), response.getLongurl());
 		return gatewayTO;
