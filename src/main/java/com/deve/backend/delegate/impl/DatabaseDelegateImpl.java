@@ -108,12 +108,25 @@ public class DatabaseDelegateImpl implements DatabaseDelegate {
 	public Menu getMenuItemById(String menuItem) {
 		return menuDao.getMenuById(menuItem);
 	}
-
+	
+	@Override
+	public boolean createOrderWithTransactions(Order orderObj,
+			List<Transaction> transactions) {
+		try {
+			orderDao.createOrder(orderObj);
+			transactions.forEach(t->transactionDao.createTransaction(t));
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Exception while creating order and transactions");
+			return false;
+		}
+	}
+	
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED)
-	public boolean createOrder(Order order, Transaction transaction) {
+	public boolean createOrder(Order order) {
 		orderDao.createOrder(order);
-		transactionDao.createTransaction(transaction);
 		return true;
 	}
 	

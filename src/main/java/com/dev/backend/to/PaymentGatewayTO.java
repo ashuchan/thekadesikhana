@@ -8,15 +8,10 @@ public class PaymentGatewayTO {
 	private String orderId;
 
 	@JsonProperty
-	private String transactionId;
-
-	@JsonProperty
 	private String paymentUrl;
 
-	public PaymentGatewayTO(String orderId, String transactionId,
-			String paymentUrl) {
+	public PaymentGatewayTO(String orderId, String paymentUrl) {
 		this.orderId = orderId;
-		this.transactionId = transactionId;
 		this.paymentUrl = paymentUrl;
 	}
 
@@ -26,14 +21,6 @@ public class PaymentGatewayTO {
 
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
-	}
-
-	public String getTransactionId() {
-		return transactionId;
-	}
-
-	public void setTransactionId(String transactionId) {
-		this.transactionId = transactionId;
 	}
 
 	public String getPaymentUrl() {

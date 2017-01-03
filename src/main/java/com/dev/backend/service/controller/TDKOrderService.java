@@ -1,5 +1,7 @@
 package com.dev.backend.service.controller;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.sql.Date;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -13,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.dev.backend.delegate.DatabaseDelegate;
-import com.dev.backend.dto.Menu;
 import com.dev.backend.dto.Order;
 import com.dev.backend.dto.Order.OrderStatus;
 import com.dev.backend.dto.OrderItem;
@@ -27,10 +27,15 @@ import com.dev.backend.to.InstamojoPaymentResponseTO;
 import com.dev.backend.to.InstamojoPaymentTO;
 import com.dev.backend.to.OrderTransactionTO;
 import com.dev.backend.to.PaymentGatewayTO;
-import com.dev.backend.util.UserUtil;
 
 @Controller
 public class TDKOrderService extends TDKServices {
+
+	private SecureRandom random = new SecureRandom();
+
+	public String nextSessionId() {
+		return new BigInteger(130, random).toString(32);
+	}
 	
 	@RequestMapping(value="/order/{orderId}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Order getOrder(@PathVariable String orderId) {
@@ -42,55 +47,7 @@ public class TDKOrderService extends TDKServices {
 		return delegate.getOrdersByCustomer(userId);
 	}
 	
-	@RequestMapping(value="/order/wallet", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PaymentGatewayTO createOrderByWallet(@RequestBody OrderTransactionTO order) {
-		/*
-		 * Create new payment with instamojo
-		 * Create new order
-		 * Generate new Order with order id from instamojo
-		 * create transaction with payment id
-		 * Update Database
-		 * return object with payment details
-		 */
-		User user = delegate.getUser(order.getUserId());
-		UserAddress address = delegate.getAddressById(order.getAddressId());
-		List<OrderItem> menuItems = new ArrayList<OrderItem>();
-		order.getMenuItems().forEach(
-				m -> menuItems.add(new OrderItem(delegate.getMenuItemById(m
-						.getMenuItem()), m.getQuantity())));
-		int totalPrice = 0;
-		for(OrderItem m:menuItems) {
-			totalPrice+=m.getMenu().getPrice()*m.getQuantity();
-		}
-		
-		InstamojoPaymentTO paymentRequest = new InstamojoPaymentTO(""+totalPrice, user.getName(), user.getEmail(), user.getPhone());
-		InstamojoPaymentResponseTO response = TDKInstamojoService.createPayment(paymentRequest);
-		String orderId = TDKInstamojoService.createOrder(response.getId());
-		
-		Order orderObj = new Order();
-		orderObj.setAddress(address);
-		orderObj.setOrderDate(new Date(Instant.now().toEpochMilli()));
-		orderObj.setOrderId(orderId);
-		orderObj.setTotalPrice(totalPrice);
-		orderObj.setUser(user);
-		orderObj.setStatus(OrderStatus.ACCEPTED);
-		menuItems.forEach(m->m.setOrder(orderObj));
-		orderObj.setOrderItems(menuItems);
-		
-		Transaction transaction = new Transaction();
-		transaction.setAmount(totalPrice);
-		transaction.setOrder(orderObj);
-		transaction.setWallet(user.getPhone());
-		transaction.setTransactionId(response.getId());
-		transaction.setTransactionCategory(TransactionCategory.GATEWAY);
-		transaction.setTransactionType(TransactionType.DEBIT);
-		
-		delegate.createOrder(orderObj,transaction);
-		PaymentGatewayTO gatewayTO = new PaymentGatewayTO(orderId, response.getId(), response.getLongurl());
-		return gatewayTO;
-	}
-	
-	@RequestMapping(value="/order/gateway", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/order", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody PaymentGatewayTO createOrder(@RequestBody OrderTransactionTO order) {
 		/*
 		 * Create new payment with instamojo
@@ -110,10 +67,21 @@ public class TDKOrderService extends TDKServices {
 		for(OrderItem m:menuItems) {
 			totalPrice+=m.getMenu().getPrice()*m.getQuantity();
 		}
-		
-		InstamojoPaymentTO paymentRequest = new InstamojoPaymentTO(""+totalPrice, user.getName(), user.getEmail(), user.getPhone());
-		InstamojoPaymentResponseTO response = TDKInstamojoService.createPayment(paymentRequest);
-		String orderId = TDKInstamojoService.createOrder(response.getId());
+
+		int gatewayPrice = totalPrice
+				- (order.getPromotionalWalletCut() + order.getWalletCashCut());
+		String transactionId = null;
+		String orderId = null;
+		String paymentURL = null;
+		if (gatewayPrice > 0) {
+			InstamojoPaymentTO paymentRequest = new InstamojoPaymentTO(""+totalPrice, user.getName(), user.getEmail(), user.getPhone());
+			InstamojoPaymentResponseTO response = TDKInstamojoService.createPayment(paymentRequest);
+			orderId = TDKInstamojoService.createOrder(response.getId());
+			transactionId = response.getId();
+			paymentURL = response.getLongurl();
+		} else {
+			orderId = nextSessionId();
+		}
 		
 		Order orderObj = new Order();
 		orderObj.setAddress(address);
@@ -124,18 +92,34 @@ public class TDKOrderService extends TDKServices {
 		orderObj.setStatus(OrderStatus.ACCEPTED);
 		menuItems.forEach(m->m.setOrder(orderObj));
 		orderObj.setOrderItems(menuItems);
+		List<Transaction> transactions = new ArrayList<Transaction>();
+		if(order.getPromotionalWalletCut()>0){
+			// create promotional wallet transaction
+			transactions.add(createTransaction(order.getPromotionalWalletCut(), orderObj, user.getPhone(), null, TransactionCategory.PROMOTIONAL));
+		}
+		if(order.getWalletCashCut()>0) {
+			// create wallet cash cut
+			transactions.add(createTransaction(order.getWalletCashCut(), orderObj, user.getPhone(), null, TransactionCategory.WALLET));
+		}
+		if( gatewayPrice >0) {
+			transactions.add(createTransaction(gatewayPrice, orderObj, user.getPhone(), transactionId, TransactionCategory.GATEWAY));
+		}
 		
+		delegate.createOrderWithTransactions(orderObj,transactions);
+		PaymentGatewayTO gatewayTO = new PaymentGatewayTO(orderId, paymentURL);
+		return gatewayTO;
+	}
+
+	public Transaction createTransaction(int totalPrice, Order orderObj,
+			String walletId, String transactionId, TransactionCategory category) {
 		Transaction transaction = new Transaction();
 		transaction.setAmount(totalPrice);
 		transaction.setOrder(orderObj);
-		transaction.setWallet(user.getPhone());
-		transaction.setTransactionId(response.getId());
-		transaction.setTransactionCategory(TransactionCategory.GATEWAY);
+		transaction.setWallet(walletId);
+		transaction.setTransactionId((transactionId==null)?nextSessionId():transactionId);
+		transaction.setTransactionCategory(category);
 		transaction.setTransactionType(TransactionType.DEBIT);
-		
-		delegate.createOrder(orderObj,transaction);
-		PaymentGatewayTO gatewayTO = new PaymentGatewayTO(orderId, response.getId(), response.getLongurl());
-		return gatewayTO;
+		return transaction;
 	}
 	
 	@RequestMapping(value="/order/status", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)

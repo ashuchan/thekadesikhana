@@ -32,8 +32,6 @@ public interface DatabaseDelegate {
 
 	public List<Order> getOrdersByCustomer(String userId);
 
-	boolean createOrder(Order order, Transaction transaction);
-
 	public String updateOrderStatus(String orderId, String status);
 
 	public List<Transaction> getTransactionsByWallet(String walletId);
@@ -53,4 +51,9 @@ public interface DatabaseDelegate {
 	public UserAddress getAddressById(String addressId);
 
 	public Menu getMenuItemById(String menuItem);
+
+	boolean createOrder(Order order);
+
+	public boolean createOrderWithTransactions(Order orderObj,
+			List<Transaction> transactions);
 }

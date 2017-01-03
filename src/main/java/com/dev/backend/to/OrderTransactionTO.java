@@ -42,6 +42,12 @@ public class OrderTransactionTO {
 	@JsonProperty
 	private List<MenuItem> menuItems;
 
+	@JsonProperty
+	private int promotionalWalletCut;
+
+	@JsonProperty
+	private int walletCashCut;
+
 	public String getUserId() {
 		return userId;
 	}
@@ -64,5 +70,21 @@ public class OrderTransactionTO {
 
 	public void setMenuItems(List<MenuItem> menuItems) {
 		this.menuItems = menuItems;
+	}
+
+	public int getPromotionalWalletCut() {
+		return promotionalWalletCut;
+	}
+
+	public void setPromotionalWalletCut(int promotionalWalletCut) {
+		this.promotionalWalletCut = promotionalWalletCut;
+	}
+
+	public int getWalletCashCut() {
+		return walletCashCut;
+	}
+
+	public void setWalletCashCut(int walletCashCut) {
+		this.walletCashCut = walletCashCut;
 	}
 }
