@@ -24,4 +24,8 @@ public interface UserDao {
 	public boolean createUser(User user);
 
 	public User getUserByRefereeCode(String refereeCode);
+
+	public boolean createAddress(UserAddress address);
+
+	public UserAddress getAddressById(String addressId);
 }

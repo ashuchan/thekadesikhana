@@ -33,6 +33,11 @@ public class OrderItem implements Serializable {
 	@JsonProperty
 	private int quantity;
 
+	public OrderItem(Menu menu, int quantity) {
+		this.menu = menu;
+		this.quantity = quantity;
+	}
+
 	public Order getOrder() {
 		return order;
 	}

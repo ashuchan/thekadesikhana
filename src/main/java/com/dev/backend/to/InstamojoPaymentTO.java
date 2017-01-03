@@ -1,5 +1,7 @@
 package com.dev.backend.to;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class InstamojoPaymentTO {
 
 	/* 'purpose': 'FIFA 16',
@@ -13,25 +15,45 @@ public class InstamojoPaymentTO {
 	  'webhook': 'http://www.example.com/webhook/',
 	  'allow_repeated_payments': 'False',*/
 	
+	@JsonProperty
 	private String purpose;
-	
+
+	@JsonProperty
 	private String amount;
-	
+
+	@JsonProperty
 	private String buyer_name;
-	
+
+	@JsonProperty
 	private String email;
-	
+
+	@JsonProperty
 	private String phone;
-	
+
+	@JsonProperty
 	private String redirect_url;
-	
+
+	@JsonProperty
 	private String send_email = "False";
-	
+
+	@JsonProperty
 	private String send_sms = "False";
-	
+
+	@JsonProperty
 	private String webhook;
-	
+
+	@JsonProperty
 	private String allow_repeated_payments = "False";
+
+	public InstamojoPaymentTO(String amount, String buyer_name, String email,
+			String phone) {
+		this.amount = amount;
+		this.buyer_name = buyer_name;
+		this.email = email;
+		this.phone = phone;
+		this.purpose = "ThekaDesiMeals";
+		this.webhook = "";
+	}
 
 	public String getPurpose() {
 		return purpose;

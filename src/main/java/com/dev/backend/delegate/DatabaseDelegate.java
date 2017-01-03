@@ -32,7 +32,7 @@ public interface DatabaseDelegate {
 
 	public List<Order> getOrdersByCustomer(String userId);
 
-	boolean createOrder(Order order);
+	boolean createOrder(Order order, Transaction transaction);
 
 	public String updateOrderStatus(String orderId, String status);
 
@@ -47,4 +47,10 @@ public interface DatabaseDelegate {
 	public Transaction createTransaction(Transaction transaction);
 
 	public String updateTransaction(Transaction transaction);
+
+	public boolean createAddress(UserAddress address);
+
+	public UserAddress getAddressById(String addressId);
+
+	public Menu getMenuItemById(String menuItem);
 }

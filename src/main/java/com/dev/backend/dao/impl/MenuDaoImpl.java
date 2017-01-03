@@ -34,4 +34,12 @@ public class MenuDaoImpl extends AbstractDao implements MenuDao{
 		return menu.get();
 	}
 
+	@Override
+	public Menu getMenuById(String menuItem) {
+		System.out.println("Fetching menu for "+ menuItem);
+		Criteria criteria = getSession().createCriteria(Menu.class);
+		criteria.add(Restrictions.eq("id", menuItem));
+		return (Menu)criteria.uniqueResult();
+	}
+
 }

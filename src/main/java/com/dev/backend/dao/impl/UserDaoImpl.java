@@ -59,7 +59,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
 	public void refreshTokens(String userId) {
 		
 	}
-
+	
 	@Override
 	public boolean createUser(User user) {
 		try{
@@ -77,5 +77,19 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
 		Criteria criteria = getSession().createCriteria(User.class);
 		criteria.add(Restrictions.eq("referralCode", refereeCode));
 		return (User) criteria.uniqueResult();
+	}
+
+	@Override
+	public boolean createAddress(UserAddress address) {
+		getSession().save(address);
+		return true;
+	}
+
+	@Override
+	public UserAddress getAddressById(String addressId) {
+		System.out.println("Fetching UserAddress with addressId: "+ addressId);
+		Criteria criteria = getSession().createCriteria(UserAddress.class);
+		criteria.add(Restrictions.eq("addressId", addressId));
+		return (UserAddress) criteria.uniqueResult();
 	}
 }

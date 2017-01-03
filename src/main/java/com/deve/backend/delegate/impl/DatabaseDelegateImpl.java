@@ -54,6 +54,11 @@ public class DatabaseDelegateImpl implements DatabaseDelegate {
 		return userDao.createUser(user);
 	}
 	
+	@Override
+	public boolean createAddress(UserAddress address) {
+		return userDao.createAddress(address);
+	}
+	
 	@Transactional(propagation=Propagation.REQUIRED)
 	public boolean createReferralCashBack(User user) {
 		User refereeUser = userDao.getUserByRefereeCode(user.getRefereeCode());
@@ -94,6 +99,26 @@ public class DatabaseDelegateImpl implements DatabaseDelegate {
 	
 	@Override
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
+	public UserAddress getAddressById(String addressId) {
+		return userDao.getAddressById(addressId);
+	}
+
+	@Override
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
+	public Menu getMenuItemById(String menuItem) {
+		return menuDao.getMenuById(menuItem);
+	}
+
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED)
+	public boolean createOrder(Order order, Transaction transaction) {
+		orderDao.createOrder(order);
+		transactionDao.createTransaction(transaction);
+		return true;
+	}
+	
+	@Override
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public Order getOrder(String orderId) {
 		return orderDao.getOrder(orderId);
 	}
@@ -102,12 +127,6 @@ public class DatabaseDelegateImpl implements DatabaseDelegate {
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Order> getOrdersByCustomer(String userId) {
 		return orderDao.getOrdersByCustomer(userId);
-	}
-	
-	@Override
-	@Transactional(propagation=Propagation.REQUIRED)
-	public boolean createOrder(Order order) {
-		return orderDao.createOrder(order);
 	}
 	
 	@Override
@@ -196,5 +215,5 @@ public class DatabaseDelegateImpl implements DatabaseDelegate {
 	public void setTransactionDao(TransactionDao transactionDao) {
 		this.transactionDao = transactionDao;
 	}
-	
+
 }

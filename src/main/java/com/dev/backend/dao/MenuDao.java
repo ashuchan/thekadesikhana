@@ -12,4 +12,6 @@ public interface MenuDao {
 	public List<Menu> getTodaysMenu();
 	
 	public Menu getTodaysMenuByCuisine(int cusisine);
+
+	public Menu getMenuById(String menuItem);
 }

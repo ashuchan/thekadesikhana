@@ -44,6 +44,10 @@ public class Menu {
 	@Column(name="url_tablet")
 	@JsonProperty
 	private String urlTablet;
+	
+	@Column(name="price")
+	@JsonProperty
+	private int price;
 
 	public int getId() {
 		return id;
@@ -91,6 +95,14 @@ public class Menu {
 
 	public void setUrlTablet(String urlTablet) {
 		this.urlTablet = urlTablet;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
 	}
 	
 }
