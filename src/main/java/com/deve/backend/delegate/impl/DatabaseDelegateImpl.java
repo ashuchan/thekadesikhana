@@ -65,7 +65,7 @@ public class DatabaseDelegateImpl implements DatabaseDelegate {
 		try {
 			Transaction transaction = new Transaction();
 			transaction.setTransactionId(generateTransactionId(refereeUser));
-			transaction.setWallet(refereeUser.getWallet());
+			transaction.setWallet(refereeUser.getPhone());
 			transaction.setAmount(TransactionConstants.REFERRAL_BONUS_AMOUNT);
 			transaction.setTransactionType(TransactionType.CREDIT);
 			transaction.setTransactionCategory(TransactionCategory.REFERRAL_BONUS);

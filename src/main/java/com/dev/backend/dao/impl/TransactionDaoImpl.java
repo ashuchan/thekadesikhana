@@ -45,7 +45,7 @@ public class TransactionDaoImpl extends AbstractDao implements TransactionDao {
 	public void createTransaction(Transaction transaction) {
 
 		System.out.println("Saving transactions for wallet: "
-				+ transaction.getWallet().getUser().getPhone()
+				+ transaction.getWallet()
 				+ " and for type:" + transaction.getTransactionCategory());
 		getSession().save(transaction);
 	}

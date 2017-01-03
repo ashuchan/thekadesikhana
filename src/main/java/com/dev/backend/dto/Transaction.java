@@ -34,9 +34,8 @@ public class Transaction {
 	@JoinColumn(name="order_id")
 	private Order order;
 	
-	@ManyToOne
-	@JoinColumn(name="wallet_id")
-	private Wallet wallet;
+	@Column(name="wallet_id")
+	private String wallet;
 	
 	@Column(name="type")
 	private String transactionType;
@@ -69,11 +68,11 @@ public class Transaction {
 		this.order = order;
 	}
 
-	public Wallet getWallet() {
+	public String getWallet() {
 		return wallet;
 	}
 
-	public void setWallet(Wallet wallet) {
+	public void setWallet(String wallet) {
 		this.wallet = wallet;
 	}
 

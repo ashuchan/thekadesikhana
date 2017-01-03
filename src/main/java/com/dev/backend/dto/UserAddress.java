@@ -20,7 +20,7 @@ public class UserAddress {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="user_id")
 	@JsonIgnore
-	private String userId;
+	private User userId;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -52,11 +52,11 @@ public class UserAddress {
 	@JsonProperty
 	private String mobileNumber;
 
-	public String getUserId() {
+	public User getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(User userId) {
 		this.userId = userId;
 	}
 

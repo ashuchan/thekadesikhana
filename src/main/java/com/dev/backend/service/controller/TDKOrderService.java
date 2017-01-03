@@ -79,7 +79,7 @@ public class TDKOrderService extends TDKServices {
 		Transaction transaction = new Transaction();
 		transaction.setAmount(totalPrice);
 		transaction.setOrder(orderObj);
-		transaction.setWallet(user.getWallet());
+		transaction.setWallet(user.getPhone());
 		transaction.setTransactionId(response.getId());
 		transaction.setTransactionCategory(TransactionCategory.GATEWAY);
 		transaction.setTransactionType(TransactionType.DEBIT);
