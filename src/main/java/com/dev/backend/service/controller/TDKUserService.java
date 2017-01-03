@@ -26,7 +26,7 @@ public class TDKUserService extends TDKServices {
 		return delegate.getUser(userId);
 	}
 
-	@RequestMapping(value="/user/wallet",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/user/wallet/{userId}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Wallet getUserWallet(String userId) {
 		return delegate.getUserWallet(userId);
 	}
