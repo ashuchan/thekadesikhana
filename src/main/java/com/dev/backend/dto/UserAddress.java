@@ -2,25 +2,20 @@ package com.dev.backend.dto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name="user_address")
 public class UserAddress {
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="user_id")
-	@JsonIgnore
-	private User userId;
+	@Column(name="user_id")
+	@JsonProperty
+	private String userId;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -52,11 +47,11 @@ public class UserAddress {
 	@JsonProperty
 	private String mobileNumber;
 
-	public User getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(User userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 

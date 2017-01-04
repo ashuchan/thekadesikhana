@@ -18,10 +18,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Wallet implements Serializable{
 	
 	@Id
-	@OneToOne
-	@JoinColumn(name="phone")
+	@Column(name="phone")
 	@JsonIgnore
-	private User user;
+	private String user;
 	
 	@Column(name="wallet_balance")
 	private int walletBalance;
@@ -29,11 +28,11 @@ public class Wallet implements Serializable{
 	@Column(name="promotional_balance")
 	private int promotionalBalance;
 	
-	public User getUser() {
+	public String getUser() {
 		return user;
 	}
 
-	public void setUser(User userId) {
+	public void setUser(String userId) {
 		this.user = userId;
 	}
 

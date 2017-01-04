@@ -18,10 +18,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Token implements Serializable{
 
 	@Id
-	@OneToOne
-	@JoinColumn(name="phone")
+	@Column(name="phone")
 	@JsonIgnore
-	private User user;
+	private String user;
 	
 	@Column(name="access_token")
 	@JsonProperty
@@ -38,11 +37,11 @@ public class Token implements Serializable{
 	@Column(name="refresh_token_expiry")
 	private long refreshTokenExpiry;
 
-	public User getUser() {
+	public String getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(String user) {
 		this.user = user;
 	}
 

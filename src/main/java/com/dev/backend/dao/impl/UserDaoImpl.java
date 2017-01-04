@@ -26,16 +26,16 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
 	@Override
 	public Wallet getUserWallet(String userId) {
 		System.out.println("Fetching wallet info for user id: "+ userId);
-		Criteria criteria = getSession().createCriteria(Wallet.class);
-		criteria.add(Restrictions.eq("user_id", userId));
-		return (Wallet) criteria.list();
+		Criteria criteria = getSession().createCriteria(User.class);
+		criteria.add(Restrictions.eq("phone", userId));
+		return ((User) criteria.uniqueResult()).getWallet();
 	}
 
 	@Override
-	public List <UserAddress> getUserAddress(String userId) {
+	public List<UserAddress> getUserAddress(String userId) {
 		System.out.println("Fetching Address for user id: "+ userId);
 		Criteria criteria = getSession().createCriteria(UserAddress.class);
-		criteria.add(Restrictions.eq("user_id", userId));
+		criteria.add(Restrictions.eq("userId", userId));
 		return criteria.list();
 	}
 
@@ -43,7 +43,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
 	public List <UserActivity> getUserActivity(String userId) {
 		System.out.println("Fetching User Activity for user id: "+ userId);
 		Criteria criteria = getSession().createCriteria(UserActivity.class);
-		criteria.add(Restrictions.eq("user_id", userId));
+		criteria.add(Restrictions.eq("userId", userId));
 		return criteria.list();
 	}
 
@@ -51,7 +51,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
 	public Token getUserToken(String userId) {
 		System.out.println("Fetching User Token for user id: "+ userId);
 		Criteria criteria = getSession().createCriteria(Token.class);
-		criteria.add(Restrictions.eq("user_id", userId));
+		criteria.add(Restrictions.eq("userId", userId));
 		return (Token) criteria.list();
 	}
 

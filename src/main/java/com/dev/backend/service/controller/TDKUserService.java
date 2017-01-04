@@ -27,7 +27,7 @@ public class TDKUserService extends TDKServices {
 	}
 
 	@RequestMapping(value="/user/wallet/{userId}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Wallet getUserWallet(String userId) {
+	public @ResponseBody Wallet getUserWallet(@PathVariable String userId) {
 		return delegate.getUserWallet(userId);  
 	}
 
@@ -36,8 +36,8 @@ public class TDKUserService extends TDKServices {
 		return delegate.getUserAddress(userId);
 	}
 
-	@RequestMapping(value="/user/activity",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody List<UserActivity> getUserActivity(String userId) {
+	@RequestMapping(value="/user/activity/{userId}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<UserActivity> getUserActivity(@PathVariable String userId) {
 		return delegate.getUserActivity(userId);
 	}
 	

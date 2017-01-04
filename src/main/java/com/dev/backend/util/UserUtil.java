@@ -39,7 +39,7 @@ public class UserUtil {
 		generateReferralCode(user);
 		generateTokens(user);
 		Wallet wallet = new Wallet();
-		wallet.setUser(user);
+		wallet.setUser(user.getPhone());
 		user.setWallet(wallet);
 	}
 
@@ -50,7 +50,7 @@ public class UserUtil {
 		 * Set expiry time to 1 hour for accessToken and 15 days for refresh token
 		 */
 		Token token = new Token();
-		token.setUser(user);
+		token.setUser(user.getPhone());
 		token.setAcessToken(UUID.randomUUID().toString());
 		token.setAccessTokenExpiry(60 * 60 * 1000);
 		
