@@ -32,6 +32,10 @@ public class OrderItem implements Serializable {
 	@Column(name="qty")
 	@JsonProperty
 	private int quantity;
+	
+	public OrderItem() {
+		
+	}
 
 	public OrderItem(Menu menu, int quantity) {
 		this.menu = menu;
