@@ -7,6 +7,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name="transaction")
 public class Transaction {
@@ -28,28 +30,35 @@ public class Transaction {
 	
 	@Id
 	@Column(name="transaction_id")
+	@JsonProperty
 	private String transactionId;
 	
-	@ManyToOne
-	@JoinColumn(name="order_id")
-	private Order order;
+	@Column(name="order_id")
+	@JsonProperty
+	private String order;
 	
-	@Column(name="wallet_id")
+	@Column(name="phone")
+	@JsonProperty
 	private String wallet;
 	
 	@Column(name="type")
+	@JsonProperty
 	private String transactionType;
 	
 	@Column(name="category")
+	@JsonProperty
 	private String transactionCategory;
 	
 	@Column(name="amount")
+	@JsonProperty
 	private long amount;
 	
 	@Column(name="comment")
+	@JsonProperty
 	private String comment;
 	
 	@Column(name="Instamojo")
+	@JsonProperty
 	private String gatewayId;
 	
 	public String getTransactionId() {
@@ -60,11 +69,11 @@ public class Transaction {
 		this.transactionId = transactionId;
 	}
 
-	public Order getOrder() {
+	public String getOrder() {
 		return order;
 	}
 
-	public void setOrder(Order order) {
+	public void setOrder(String order) {
 		this.order = order;
 	}
 

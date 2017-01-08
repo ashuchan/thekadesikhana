@@ -55,6 +55,7 @@ public class DatabaseDelegateImpl implements DatabaseDelegate {
 	}
 	
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED)
 	public boolean createAddress(UserAddress address) {
 		return userDao.createAddress(address);
 	}
@@ -110,11 +111,22 @@ public class DatabaseDelegateImpl implements DatabaseDelegate {
 	}
 	
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED)
 	public boolean createOrderWithTransactions(Order orderObj,
 			List<Transaction> transactions) {
 		try {
 			orderDao.createOrder(orderObj);
-			transactions.forEach(t->transactionDao.createTransaction(t));
+			transactions.forEach(t->{
+				transactionDao.createTransaction(t);
+				Wallet wallet = userDao.getUserWallet(t.getWallet());
+				if(t.getTransactionCategory().equals(TransactionCategory.PROMOTIONAL.name())) {
+					wallet.setPromotionalBalance((int)(wallet.getPromotionalBalance()-t.getAmount()));
+				}
+				if(t.getTransactionCategory().equals(TransactionCategory.WALLET.name())) {
+					wallet.setWalletBalance(((int)(wallet.getWalletBalance()-t.getAmount())));
+				}
+				userDao.updateWallet(wallet);				
+			});
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

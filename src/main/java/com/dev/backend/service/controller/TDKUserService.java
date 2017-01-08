@@ -42,12 +42,11 @@ public class TDKUserService extends TDKServices {
 	}
 	
 	@RequestMapping(value="/user/address",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
-	@ResponseStatus(code=HttpStatus.CREATED)
-	public String saveAddress(UserAddress address) {
+	public @ResponseBody UserAddress saveAddress(@RequestBody UserAddress address) {
 		if(delegate.createAddress(address)) {
-			return "SUCCESS";
+			return address;
 		}
-		return "FAILURE";
+		return null;
 	}
 	
 	@RequestMapping(value="/user", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)

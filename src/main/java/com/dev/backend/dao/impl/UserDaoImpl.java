@@ -92,4 +92,9 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
 		criteria.add(Restrictions.eq("addressId", addressId));
 		return (UserAddress) criteria.uniqueResult();
 	}
+
+	@Override
+	public void updateWallet(Wallet wallet) {
+		getSession().update(wallet);
+	}
 }

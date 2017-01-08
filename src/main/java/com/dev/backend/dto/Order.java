@@ -3,8 +3,10 @@ package com.dev.backend.dto;
 import java.sql.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -16,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table(name="order")
+@Table(name="`order`")
 public class Order {
 
 	public enum OrderStatus {
@@ -24,38 +26,37 @@ public class Order {
 	}
 	
 	@Id
-	@Column(name="order_id")
+	@Column(name="`order_id`")
 	@JsonProperty
 	private String orderId;
 	
-	@ManyToOne
-	@JoinColumn(name="phone")
-	@JsonIgnore
-	private User user;
+	@Column(name="`user_id`")
+	@JsonProperty
+	private String user;
 	
-	@Column(name="order_date")
+	@Column(name="`date`")
 	@JsonProperty
 	private Date orderDate;
 	
-	@Column(name="total_price")
+	@Column(name="`price`")
 	@JsonProperty
 	private long totalPrice;
 	
 	@OneToOne
-	@JoinColumn(name="address_id")
+	@JoinColumn(name="`address_id`")
 	@JsonProperty
 	private UserAddress address;
 	
-	@Column(name="order_status")
+	@Column(name="`order_status`")
 	@JsonProperty
 	private String status;
 	
-	@Column(name="special_request")
+	@Column(name="`special_request`")
 	@JsonProperty
 	private String specialRequest;
 	
-	@OneToMany
-	@JoinColumn(name="order_id")
+	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL,orphanRemoval=true)
+	@JoinColumn(name="`order_id`")
 	@JsonProperty
 	private List<OrderItem> orderItems;
 
@@ -67,11 +68,11 @@ public class Order {
 		this.orderId = orderId;
 	}
 
-	public User getUser() {
+	public String getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(String user) {
 		this.user = user;
 	}
 

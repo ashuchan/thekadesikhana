@@ -7,13 +7,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 //userId, addressId, list of MenuItems and other details from the request
 public class OrderTransactionTO {
 	
-	public class MenuItem {
+	public static class MenuItem {
 		
 		@JsonProperty
 		private String menuItem;
 		
 		@JsonProperty
 		private int quantity;
+
+		public MenuItem(String menuItem, int quantity) {
+			this.menuItem = menuItem;
+			this.quantity = quantity;
+		}
+		
+		public MenuItem() {
+			
+		}
 
 		public String getMenuItem() {
 			return menuItem;

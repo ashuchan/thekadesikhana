@@ -21,7 +21,6 @@ public class Menu {
 	@Id
 	@GeneratedValue
 	@Column(name="id")
-	@JsonIgnore
 	private int id;
 	
 	@Column(name="date")

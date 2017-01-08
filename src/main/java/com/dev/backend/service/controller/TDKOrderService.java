@@ -88,7 +88,7 @@ public class TDKOrderService extends TDKServices {
 		orderObj.setOrderDate(new Date(Instant.now().toEpochMilli()));
 		orderObj.setOrderId(orderId);
 		orderObj.setTotalPrice(totalPrice);
-		orderObj.setUser(user);
+		orderObj.setUser(user.getPhone());
 		orderObj.setStatus(OrderStatus.ACCEPTED);
 		menuItems.forEach(m->m.setOrder(orderObj));
 		orderObj.setOrderItems(menuItems);
@@ -114,7 +114,7 @@ public class TDKOrderService extends TDKServices {
 			String walletId, String transactionId, TransactionCategory category) {
 		Transaction transaction = new Transaction();
 		transaction.setAmount(totalPrice);
-		transaction.setOrder(orderObj);
+		transaction.setOrder(orderObj.getOrderId());
 		transaction.setWallet(walletId);
 		transaction.setTransactionId((transactionId==null)?nextSessionId():transactionId);
 		transaction.setTransactionCategory(category);

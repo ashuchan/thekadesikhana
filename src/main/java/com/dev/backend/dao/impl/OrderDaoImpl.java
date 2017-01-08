@@ -31,7 +31,8 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 	@Override
 	public boolean createOrder(Order order) {
 		try{
-			getSession().save(order);
+			getSession().saveOrUpdate(order);
+			getSession().flush();
 			return true;
 		} catch( Exception e) {
 			//TODO: Log

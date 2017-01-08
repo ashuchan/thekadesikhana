@@ -28,4 +28,6 @@ public interface UserDao {
 	public boolean createAddress(UserAddress address);
 
 	public UserAddress getAddressById(String addressId);
+
+	public void updateWallet(Wallet wallet);
 }

@@ -14,4 +14,8 @@ public abstract class AbstractDao {
 		return sessionFactory.getCurrentSession();
 	}
 	
+	public void flush() {
+		getSession().flush();
+	}
+	
 }
