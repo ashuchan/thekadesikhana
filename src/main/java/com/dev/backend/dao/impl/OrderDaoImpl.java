@@ -15,7 +15,7 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 	@Override
 	public Order getOrder(String orderId) {
 		System.out.println("Fetching order for id: "+ orderId);
-		Criteria criteria = getSession().createCriteria(User.class);
+		Criteria criteria = getSession().createCriteria(Order.class);
 		criteria.add(Restrictions.eq("orderId", orderId));
 		return (Order) criteria.uniqueResult();
 	}
@@ -23,7 +23,7 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 	@Override
 	public List<Order> getOrdersByCustomer(String userId) {
 		System.out.println("Fetching order for id: "+ userId);
-		Criteria criteria = getSession().createCriteria(User.class);
+		Criteria criteria = getSession().createCriteria(Order.class);
 		criteria.add(Restrictions.eq("user", userId));
 		return (List<Order>) criteria.uniqueResult();
 	}
