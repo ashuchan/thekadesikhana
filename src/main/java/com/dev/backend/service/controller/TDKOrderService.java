@@ -67,13 +67,14 @@ public class TDKOrderService extends TDKServices {
 		for(OrderItem m:menuItems) {
 			totalPrice+=m.getMenu().getPrice()*m.getQuantity();
 		}
+		boolean isCod = order.getIsCOD().startsWith("f")?false:true;
 
 		int gatewayPrice = totalPrice
 				- (order.getPromotionalWalletCut() + order.getWalletCashCut());
 		String transactionId = null;
 		String orderId = null;
 		String paymentURL = null;
-		if (gatewayPrice > 0) {
+		if (gatewayPrice > 0 && !isCod) {
 			InstamojoPaymentTO paymentRequest = new InstamojoPaymentTO(""+gatewayPrice, user.getName(), user.getEmail(), user.getPhone());
 			InstamojoPaymentResponseTO response = TDKInstamojoService.createPayment(paymentRequest);
 			orderId = TDKInstamojoService.createOrder(response.getId());

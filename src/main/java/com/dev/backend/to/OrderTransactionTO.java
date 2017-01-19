@@ -56,6 +56,9 @@ public class OrderTransactionTO {
 
 	@JsonProperty
 	private int walletCashCut;
+	
+	@JsonProperty
+	private String isCOD;
 
 	public String getUserId() {
 		return userId;
@@ -95,5 +98,13 @@ public class OrderTransactionTO {
 
 	public void setWalletCashCut(int walletCashCut) {
 		this.walletCashCut = walletCashCut;
+	}
+
+	public String getIsCOD() {
+		return isCOD;
+	}
+
+	public void setIsCOD(String isCOD) {
+		this.isCOD = isCOD;
 	}
 }
