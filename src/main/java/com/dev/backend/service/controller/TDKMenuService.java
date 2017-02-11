@@ -21,7 +21,7 @@ import com.dev.backend.to.MenuTO;
 public class TDKMenuService extends TDKServices{
 	
 	@RequestMapping(value="/menu/today",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Map<String, MenuTO> getTodaysMenu() {
+	public @ResponseBody Map<String,Map<String, MenuTO>> getTodaysMenu() {
 		List<Menu> menuItems = delegate.getTodaysMenu();
 		Map<String, MenuTO> menuMap = new HashMap<String, MenuTO>();
 		menuItems.forEach(m->{
@@ -35,7 +35,9 @@ public class TDKMenuService extends TDKServices{
 				menuMap.put(name, temp);
 			}
 		});
-		return menuMap;
+		Map<String,Map<String, MenuTO>> returnObject = new HashMap<>();
+		returnObject.put("FoodType", menuMap);
+		return returnObject;
 	}
 
 }

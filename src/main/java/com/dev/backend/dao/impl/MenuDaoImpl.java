@@ -23,7 +23,10 @@ public class MenuDaoImpl extends AbstractDao implements MenuDao{
 
 	@Override
 	public List<Menu> getTodaysMenu() {
-		return getMenuByDate(new Date(System.currentTimeMillis()));
+		List<Menu> todayMenu = getMenuByDate(new Date(System.currentTimeMillis()));
+		if(todayMenu.size()>0 )
+			return todayMenu;
+		return getMenuByDate(Date.valueOf("2016-12-18"));
 	}
 
 	@Override
