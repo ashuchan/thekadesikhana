@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -25,9 +26,20 @@ public class TDKUserService extends TDKServices {
 	public @ResponseBody User getUser(@PathVariable String userId) {
 		return delegate.getUser(userId);
 	}
+	
+	@RequestMapping(value="/user",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody User getUserParam(@RequestParam String userId) {
+		return delegate.getUser(userId);
+	}
+
 
 	@RequestMapping(value="/user/wallet/{userId}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Wallet getUserWallet(@PathVariable String userId) {
+		return delegate.getUserWallet(userId);  
+	}
+	
+	@RequestMapping(value="/user/wallet",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Wallet getUserWalletParam(@RequestParam String userId) {
 		return delegate.getUserWallet(userId);  
 	}
 
@@ -36,6 +48,11 @@ public class TDKUserService extends TDKServices {
 		return delegate.getUserAddress(userId);
 	}
 
+	@RequestMapping(value="/user/address",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<UserAddress> getUserAddressParam(@RequestParam String userId) {
+		return delegate.getUserAddress(userId);
+	}
+	
 	@RequestMapping(value="/user/activity/{userId}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<UserActivity> getUserActivity(@PathVariable String userId) {
 		return delegate.getUserActivity(userId);
