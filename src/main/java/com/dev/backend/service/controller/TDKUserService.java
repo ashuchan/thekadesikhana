@@ -58,8 +58,8 @@ public class TDKUserService extends TDKServices {
 	}
 
 	@RequestMapping(value="/user/address",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody List<UserAddress> getUserAddressParam(@RequestParam String userId) {
-		return delegate.getUserAddress(userId);
+	public @ResponseBody ResponseObject getUserAddressParam(@RequestParam String userId) {
+		return getUserAddress(userId);
 	}
 	
 	@RequestMapping(value="/user/activity/{userId}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
