@@ -17,6 +17,7 @@ import com.dev.backend.dto.User;
 import com.dev.backend.dto.UserActivity;
 import com.dev.backend.dto.UserAddress;
 import com.dev.backend.dto.Wallet;
+import com.dev.backend.to.ResponseObject;
 import com.dev.backend.util.UserUtil;
 
 @Controller
@@ -44,8 +45,16 @@ public class TDKUserService extends TDKServices {
 	}
 
 	@RequestMapping(value="/user/address/{userId}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody List<UserAddress> getUserAddress(@PathVariable String userId) {
-		return delegate.getUserAddress(userId);
+	public @ResponseBody ResponseObject getUserAddress(@PathVariable String userId) {
+		ResponseObject object = new ResponseObject();
+		try {
+			object.setData(delegate.getUserAddress(userId));
+			object.setMessage("Fetched address of User successfully");
+			object.setSuccess(true);
+		} catch (Exception e) {
+			object.setMessage("Failed to fetch User Address from database");
+		}
+		return object;
 	}
 
 	@RequestMapping(value="/user/address",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
