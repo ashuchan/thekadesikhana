@@ -46,5 +46,13 @@ public class TDKMenuService extends TDKServices{
 		returnObject.put("FoodType", list);
 		return returnObject;
 	}
+	
+	@RequestMapping(value="/webmenu/today",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Map<String,List<Menu>> getTodaysMenuWeb() {
+		List<Menu> menuItems = delegate.getTodaysMenu();
+		Map<String,List<Menu>> returnObject = new HashMap<>();
+		returnObject.put("FoodType", menuItems);
+		return returnObject;
+	}
 
 }
