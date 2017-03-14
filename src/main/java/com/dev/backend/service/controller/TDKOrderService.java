@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dev.backend.dto.Order;
@@ -42,8 +43,18 @@ public class TDKOrderService extends TDKServices {
 		return delegate.getOrder(orderId);
 	}
 	
+	@RequestMapping(value="/order",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Order getOrderByParam(@RequestParam String orderId) {
+		return delegate.getOrder(orderId);
+	}
+	
 	@RequestMapping(value="/order/user/{userId}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<Order> getOrdersByCustomer(@PathVariable String userId) {
+		return delegate.getOrdersByCustomer(userId);
+	}
+	
+	@RequestMapping(value="/order/user",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<Order> getOrdersByCustomerParam(@RequestParam String userId) {
 		return delegate.getOrdersByCustomer(userId);
 	}
 	

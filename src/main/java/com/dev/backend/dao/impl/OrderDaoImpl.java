@@ -25,7 +25,7 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 		System.out.println("Fetching order for id: "+ userId);
 		Criteria criteria = getSession().createCriteria(Order.class);
 		criteria.add(Restrictions.eq("user", userId));
-		return (List<Order>) criteria.uniqueResult();
+		return (List<Order>) criteria.list();
 	}
 	
 	@Override

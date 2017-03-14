@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -16,14 +18,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Table(name="order_item")
 public class OrderItem implements Serializable {
-
+	
 	@Id
+	@Column(name="item_id")
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@JsonIgnore
+	private int itemId;
+
 	@ManyToOne
 	@JoinColumn(name="order_id")
 	@JsonIgnore
 	private Order order;
 	
-	@Id
 	@OneToOne
 	@JoinColumn(name="menu_id")
 	@JsonProperty
@@ -64,6 +70,14 @@ public class OrderItem implements Serializable {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+
+	public int getItemId() {
+		return itemId;
+	}
+
+	public void setItemId(int itemId) {
+		this.itemId = itemId;
 	}
 	
 }
