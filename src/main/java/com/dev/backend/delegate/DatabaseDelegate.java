@@ -56,4 +56,6 @@ public interface DatabaseDelegate {
 
 	public boolean createOrderWithTransactions(Order orderObj,
 			List<Transaction> transactions);
+
+	int getTotalAddress();
 }

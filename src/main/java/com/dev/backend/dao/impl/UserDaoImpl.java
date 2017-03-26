@@ -22,6 +22,12 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
 		criteria.add(Restrictions.eq("phone", userId));
 		return (User) criteria.uniqueResult();
 	}
+	
+	@Override
+	public int getTotalAddress() {
+		Criteria criteria = getSession().createCriteria(UserAddress.class);
+		return criteria.list().size();
+	}
 
 	@Override
 	public Wallet getUserWallet(String userId) {

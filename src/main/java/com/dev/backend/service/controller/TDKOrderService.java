@@ -27,7 +27,9 @@ import com.dev.backend.dto.UserAddress;
 import com.dev.backend.to.InstamojoPaymentResponseTO;
 import com.dev.backend.to.InstamojoPaymentTO;
 import com.dev.backend.to.OrderTransactionTO;
+import com.dev.backend.to.OrderTransactionTO.MenuItem;
 import com.dev.backend.to.PaymentGatewayTO;
+import com.dev.backend.to.WebOrderTO;
 
 @Controller
 public class TDKOrderService extends TDKServices {
@@ -120,6 +122,32 @@ public class TDKOrderService extends TDKServices {
 		delegate.createOrderWithTransactions(orderObj,transactions);
 		PaymentGatewayTO gatewayTO = new PaymentGatewayTO(orderId, paymentURL);
 		return gatewayTO;
+	}
+	
+	@RequestMapping(value="/weborder", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody PaymentGatewayTO webOrder(@RequestBody WebOrderTO order) {
+		OrderTransactionTO orderTo = new OrderTransactionTO();
+		orderTo.setUserId("7348815961"); //Sample Web Order User
+		
+		UserAddress address = new UserAddress();
+		address.setUserId("7348815961");
+		address.setAddressLine1(order.getUser().getAddress());
+		address.setMobileNumber(order.getUser().getContact());
+		address.setName(order.getUser().getName());
+		delegate.createAddress(address);
+		
+		orderTo.setAddressId(""+delegate.getTotalAddress());
+		order.getOrders().forEach(o -> {
+			MenuItem mi = new MenuItem();
+			mi.setMenuItem(""+o.getSku());
+			mi.setQuantity(o.getQuantity());
+			orderTo.getMenuItems().add(mi);
+		});
+		
+		if(order.getPaymentType().equals("online"))
+			orderTo.setIsCOD("f");
+		
+		return createOrder(orderTo);
 	}
 
 	public Transaction createTransaction(int totalPrice, Order orderObj,

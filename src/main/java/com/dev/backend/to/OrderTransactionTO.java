@@ -1,5 +1,6 @@
 package com.dev.backend.to;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -49,7 +50,7 @@ public class OrderTransactionTO {
 	private String addressId;
 	
 	@JsonProperty
-	private List<MenuItem> menuItems;
+	private List<MenuItem> menuItems = new ArrayList<MenuItem>();
 
 	@JsonProperty
 	private int promotionalWalletCut;

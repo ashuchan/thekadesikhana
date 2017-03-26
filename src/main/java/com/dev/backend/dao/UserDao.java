@@ -30,4 +30,6 @@ public interface UserDao {
 	public UserAddress getAddressById(String addressId);
 
 	public void updateWallet(Wallet wallet);
+
+	int getTotalAddress();
 }

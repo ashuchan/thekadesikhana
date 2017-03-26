@@ -60,6 +60,12 @@ public class DatabaseDelegateImpl implements DatabaseDelegate {
 		return userDao.createAddress(address);
 	}
 	
+	@Override
+	@Transactional(propagation=Propagation.SUPPORTS)
+	public int getTotalAddress() {
+		return userDao.getTotalAddress();
+	}
+	
 	@Transactional(propagation=Propagation.REQUIRED)
 	public boolean createReferralCashBack(User user) {
 		User refereeUser = userDao.getUserByRefereeCode(user.getRefereeCode());
