@@ -1,5 +1,6 @@
 package com.dev.backend.service.controller;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.Date;
@@ -30,6 +31,8 @@ import com.dev.backend.to.OrderTransactionTO;
 import com.dev.backend.to.OrderTransactionTO.MenuItem;
 import com.dev.backend.to.PaymentGatewayTO;
 import com.dev.backend.to.WebOrderTO;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 @Controller
 public class TDKOrderService extends TDKServices {
@@ -61,7 +64,7 @@ public class TDKOrderService extends TDKServices {
 	}
 	
 	@RequestMapping(value="/order", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PaymentGatewayTO createOrder(@RequestBody OrderTransactionTO order) {
+	public @ResponseBody PaymentGatewayTO createOrder(@RequestBody OrderTransactionTO order) throws JsonParseException, JsonMappingException, IOException {
 		/*
 		 * Create new payment with instamojo
 		 * Create new order
@@ -125,15 +128,15 @@ public class TDKOrderService extends TDKServices {
 	}
 	
 	@RequestMapping(value="/weborder", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PaymentGatewayTO webOrder(@RequestBody WebOrderTO order) {
+	public @ResponseBody PaymentGatewayTO webOrder(@RequestBody WebOrderTO order) throws JsonParseException, JsonMappingException, IOException {
 		OrderTransactionTO orderTo = new OrderTransactionTO();
 		orderTo.setUserId("7348815961"); //Sample Web Order User
 		
 		UserAddress address = new UserAddress();
 		address.setUserId("7348815961");
-		address.setAddressLine1(order.getUser().getAddress());
-		address.setMobileNumber(order.getUser().getContact());
-		address.setName(order.getUser().getName());
+		address.setAddressLine1(order.getUserInfo().getAddress());
+		address.setMobileNumber(order.getUserInfo().getContact());
+		address.setName(order.getUserInfo().getName());
 		delegate.createAddress(address);
 		
 		orderTo.setAddressId(""+delegate.getTotalAddress());

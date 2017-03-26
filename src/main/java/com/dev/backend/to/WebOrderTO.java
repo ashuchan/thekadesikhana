@@ -7,12 +7,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class WebOrderTO {
 	
 	@JsonProperty
-	private UserInfo user;
+	private UserInfo userInfo;
 	
-	public class UserInfo {
+	public static class UserInfo {
 		
 		@JsonProperty
-		private String emailId;
+		private String mail;
 		
 		@JsonProperty
 		private String name;
@@ -23,11 +23,22 @@ public class WebOrderTO {
 		@JsonProperty
 		private String contact;
 		
-		public String getEmailId() {
-			return emailId;
+		public UserInfo() {
 		}
-		public void setEmailId(String emailId) {
-			this.emailId = emailId;
+		
+		public UserInfo(String mail, String name, String address, String contact) {
+			super();
+			this.mail = mail;
+			this.name = name;
+			this.address = address;
+			this.contact = contact;
+		}
+
+		public String getMail() {
+			return mail;
+		}
+		public void setMail(String emailId) {
+			this.mail = emailId;
 		}
 		public String getName() {
 			return name;
@@ -50,9 +61,9 @@ public class WebOrderTO {
 	}
 	
 	@JsonProperty
-	private List<OrderInfo> orders;
+	private List<OrderInfo> orderInfo;
 	
-	public class OrderInfo {
+	public static class OrderInfo {
 		
 		@JsonProperty
 		private int price;
@@ -66,6 +77,17 @@ public class WebOrderTO {
 		@JsonProperty
 		private int sku;
 		
+		public OrderInfo() {
+		}
+		
+		public OrderInfo(int price, int quantity, String type, int sku) {
+			super();
+			this.price = price;
+			this.quantity = quantity;
+			this.type = type;
+			this.sku = sku;
+		}
+
 		public int getPrice() {
 			return price;
 		}
@@ -95,20 +117,20 @@ public class WebOrderTO {
 	@JsonProperty
 	private String paymentType;
 	
-	public UserInfo getUser() {
-		return user;
+	public UserInfo getUserInfo() {
+		return userInfo;
 	}
 
-	public void setUser(UserInfo user) {
-		this.user = user;
+	public void setUserInfo(UserInfo user) {
+		this.userInfo = user;
 	}
 
 	public List<OrderInfo> getOrders() {
-		return orders;
+		return orderInfo;
 	}
 
 	public void setOrders(List<OrderInfo> orders) {
-		this.orders = orders;
+		this.orderInfo = orders;
 	}
 
 	public String getPaymentType() {
