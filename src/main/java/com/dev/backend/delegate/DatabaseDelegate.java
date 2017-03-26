@@ -2,6 +2,7 @@ package com.dev.backend.delegate;
 
 import java.util.List;
 
+import com.dev.backend.dto.Feedback;
 import com.dev.backend.dto.Menu;
 import com.dev.backend.dto.Order;
 import com.dev.backend.dto.Transaction;
@@ -58,4 +59,6 @@ public interface DatabaseDelegate {
 			List<Transaction> transactions);
 
 	int getTotalAddress();
+	
+	public void saveFeedback(Feedback feedback);
 }

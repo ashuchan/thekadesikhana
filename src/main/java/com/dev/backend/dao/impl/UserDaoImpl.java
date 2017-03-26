@@ -7,6 +7,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.dev.backend.dao.AbstractDao;
 import com.dev.backend.dao.UserDao;
+import com.dev.backend.dto.Feedback;
 import com.dev.backend.dto.Token;
 import com.dev.backend.dto.User;
 import com.dev.backend.dto.UserActivity;
@@ -102,5 +103,10 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
 	@Override
 	public void updateWallet(Wallet wallet) {
 		getSession().update(wallet);
+	}
+
+	@Override
+	public void saveFeedback(Feedback feedback) {
+		getSession().saveOrUpdate(feedback);
 	}
 }

@@ -2,7 +2,6 @@ package com.dev.backend.service.controller;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.dev.backend.dto.Feedback;
 import com.dev.backend.dto.User;
 import com.dev.backend.dto.UserActivity;
 import com.dev.backend.dto.UserAddress;
@@ -94,6 +93,16 @@ public class TDKUserService extends TDKServices {
 			//Log message
 		}
 		return user;
+	}
+	
+	@RequestMapping(value="/feedback", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseObject saveFeedback(@RequestBody Feedback feedback) {
+		ResponseObject object = new ResponseObject();
+		delegate.saveFeedback(feedback);
+		object.setMessage("Feedback saved successfully");
+		object.setData(feedback);
+		object.setSuccess(true);
+		return object;
 	}
 
 }

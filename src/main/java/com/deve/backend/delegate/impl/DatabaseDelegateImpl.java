@@ -13,6 +13,7 @@ import com.dev.backend.dao.OrderDao;
 import com.dev.backend.dao.TransactionDao;
 import com.dev.backend.dao.UserDao;
 import com.dev.backend.delegate.DatabaseDelegate;
+import com.dev.backend.dto.Feedback;
 import com.dev.backend.dto.Menu;
 import com.dev.backend.dto.Order;
 import com.dev.backend.dto.Transaction;
@@ -245,6 +246,12 @@ public class DatabaseDelegateImpl implements DatabaseDelegate {
 
 	public void setTransactionDao(TransactionDao transactionDao) {
 		this.transactionDao = transactionDao;
+	}
+
+	@Override
+	public void saveFeedback(Feedback feedback) {
+		userDao.saveFeedback(feedback);
+		
 	}
 
 }

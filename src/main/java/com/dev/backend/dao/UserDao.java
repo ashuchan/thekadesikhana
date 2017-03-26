@@ -2,6 +2,7 @@ package com.dev.backend.dao;
 
 import java.util.List;
 
+import com.dev.backend.dto.Feedback;
 import com.dev.backend.dto.Token;
 import com.dev.backend.dto.User;
 import com.dev.backend.dto.UserActivity;
@@ -30,6 +31,8 @@ public interface UserDao {
 	public UserAddress getAddressById(String addressId);
 
 	public void updateWallet(Wallet wallet);
+	
+	public void saveFeedback(Feedback feedback);
 
 	int getTotalAddress();
 }
