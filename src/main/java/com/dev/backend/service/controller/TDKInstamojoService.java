@@ -3,6 +3,7 @@ package com.dev.backend.service.controller;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,9 +34,9 @@ public class TDKInstamojoService {
 
 	private static InstamojoAccessTokenTO accessTokens;
 
-	private static String javaClientSecret = "dQ9tPZnqt6VsCBecVOvkoa63chKy39H6FdUVQfC7"
-			+ "wryd95hOUx8dEA6JXNtZh0cFg5QLgy71ZZqoHdzoa8s4lsc4NXfYN4fYsfZJ68uVqMiK79d"
-			+ "GAJvjY7pcpzLfVMzD";/*
+	private static String javaClientSecret = "dQ9tPZnqt6VsCBecVOvkoa63chKy39H6FdUVQ"
+			+ "fC7wryd95hOUx8dEA6JXNtZh0cFg5QLgy71ZZqoHdzoa8s4lsc4NXfYN4fYsfZJ68uVq"
+			+ "MiK79dGAJvjY7pcpzLfVMzD";/*
 									 * "suBJDVFXQTVxZ2C7FgMqzIneuJFoU34abRYWh" +
 									 * "9HeF2nJhhK62LgCiyaCRxqSueusQSX0NyD5UYstyI2gj7G5gr5bQ9DjDvUKVPeCuYkd7"
 									 * + "e1A6UEUNEVjUgOwrDLxY06a";
@@ -67,17 +68,19 @@ public class TDKInstamojoService {
 				}
 			}
 		}
-		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-		headers.add("Authorization", accessTokens.getTokenType() + " " + accessTokens.getAccessToken());
-		headers.add("Content-Type", "application/json");
+		Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", accessTokens.getTokenType() + " " + accessTokens.getAccessToken());
+        Map<String, String> params = new HashMap<>();
 
-		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        params.put("name", paymentRequest.getBuyer_name());
+        params.put("email", paymentRequest.getEmail());
+        params.put("phone", paymentRequest.getPhone());
+        params.put("purpose", paymentRequest.getPurpose());
+        params.put("amount", String.valueOf(paymentRequest.getAmount()));
 
-		HttpEntity<InstamojoPaymentTO> request = new HttpEntity<InstamojoPaymentTO>(paymentRequest, headers);
-
-		String response = restTemplate.postForObject(InstamojoConstants.PAYMENT_API_URL, request,
-				String.class);
+            String response = HttpUtil.sendPostRequest(InstamojoConstants.PAYMENT_API_URL, headers,
+                    params);
+            System.out.println(response);
 		InstamojoPaymentResponseTO responseObject = mapper.readValue(response, InstamojoPaymentResponseTO.class);
 		return responseObject;
 	}
