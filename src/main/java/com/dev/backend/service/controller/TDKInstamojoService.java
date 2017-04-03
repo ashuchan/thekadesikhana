@@ -77,6 +77,7 @@ public class TDKInstamojoService {
         params.put("phone", paymentRequest.getPhone());
         params.put("purpose", paymentRequest.getPurpose());
         params.put("amount", String.valueOf(paymentRequest.getAmount()));
+        params.put("webhook_url", "http://thekadesikhana.com/resources/views/thankYou.html");
 
             String response = HttpUtil.sendPostRequest(InstamojoConstants.PAYMENT_API_URL, headers,
                     params);

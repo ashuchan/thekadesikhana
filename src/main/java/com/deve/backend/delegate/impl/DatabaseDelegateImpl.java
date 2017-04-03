@@ -249,6 +249,7 @@ public class DatabaseDelegateImpl implements DatabaseDelegate {
 	}
 
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED)
 	public void saveFeedback(Feedback feedback) {
 		userDao.saveFeedback(feedback);
 		

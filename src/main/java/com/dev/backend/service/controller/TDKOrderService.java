@@ -91,7 +91,12 @@ public class TDKOrderService extends TDKServices {
 		String orderId = null;
 		String paymentURL = null;
 		if (gatewayPrice > 0 && !isCod) {
-			InstamojoPaymentTO paymentRequest = new InstamojoPaymentTO(""+gatewayPrice, user.getName(), user.getEmail(), user.getPhone());
+			InstamojoPaymentTO paymentRequest = null;
+			if(user.getPhone().equals("7348815961")) {
+				paymentRequest = new InstamojoPaymentTO(""+gatewayPrice, address.getName(), user.getEmail(), address.getMobileNumber());
+			} else {
+				paymentRequest = new InstamojoPaymentTO(""+gatewayPrice, user.getName(), user.getEmail(), user.getPhone());
+			}
 			InstamojoPaymentResponseTO response = TDKInstamojoService.createPayment(paymentRequest);
 			transactionId = response.getId();
 			paymentURL = response.getLongurl();
