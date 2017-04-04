@@ -59,7 +59,7 @@ public class OrderTransactionTO {
 	private int walletCashCut;
 	
 	@JsonProperty
-	private String isCOD;
+	private String isCOD = "true";
 
 	public String getUserId() {
 		return userId;

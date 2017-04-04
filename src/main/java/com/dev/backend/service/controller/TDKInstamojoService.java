@@ -1,18 +1,15 @@
 package com.dev.backend.service.controller;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
@@ -47,6 +44,10 @@ public class TDKInstamojoService {
 	private static String clientSercret = "yXalaUv1v5EZFKPIoGqRr6y3dYziwVSFWXVQp"
 			+ "PgflVedBLZEbmq0gpEiGO9riFDW1LroDZqjhJzYi9PsxIWqGHVdHsQVJNB1" + "hEOnWbAq562ieVxVJ3anTvlmvgDUHped";
 	
+	private static Date tokenExpiryTime = new Date(Instant.now().toEpochMilli());
+	
+	private static long expiryMiliSec = 36000*1000;
+			
 	private static ObjectMapper mapper = new ObjectMapper();
 
 	public static void generateAccessTokens() throws JsonParseException, JsonMappingException, IOException {
@@ -57,13 +58,15 @@ public class TDKInstamojoService {
 		String response = HttpUtil.sendPostRequest(InstamojoConstants.test_token_URL, null, requestMap);
 		System.out.println(response);
 		accessTokens = mapper.readValue(response, InstamojoAccessTokenTO.class);
+		tokenExpiryTime = new Date(Instant.now().toEpochMilli()+expiryMiliSec);
+		System.out.println(tokenExpiryTime);
 	}
 
 	public static InstamojoPaymentResponseTO createPayment(InstamojoPaymentTO paymentRequest)
 			throws JsonParseException, JsonMappingException, IOException {
-		if (accessTokens == null) {
+		if (accessTokens == null || tokenExpired()) {
 			synchronized (TDKInstamojoService.class) {
-				if (accessTokens == null) {
+				if (accessTokens == null || tokenExpired()) {
 					generateAccessTokens();
 				}
 			}
@@ -84,6 +87,10 @@ public class TDKInstamojoService {
             System.out.println(response);
 		InstamojoPaymentResponseTO responseObject = mapper.readValue(response, InstamojoPaymentResponseTO.class);
 		return responseObject;
+	}
+
+	private static boolean tokenExpired() {
+		return tokenExpiryTime.before(new Date(Instant.now().toEpochMilli()));
 	}
 
 	public static String createOrder(String paymentId) {
