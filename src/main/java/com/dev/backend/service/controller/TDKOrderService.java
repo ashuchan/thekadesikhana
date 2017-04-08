@@ -168,7 +168,7 @@ public class TDKOrderService extends TDKServices {
 	}*/
 
 	@RequestMapping(value = "/weborder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseBuilder webOrderNew(@RequestBody WebOrderTO order)
+	public Response webOrderNew(@RequestBody WebOrderTO order)
 			throws JsonParseException, JsonMappingException, IOException, URISyntaxException {
 		UserAddress address = new UserAddress();
 		address.setUserId("7348815961");
@@ -215,7 +215,7 @@ public class TDKOrderService extends TDKServices {
 		System.out.println("Payment URL - " + PaymentUrl);
 		delegate.createOrderWithTransactions(orderObj, transactions);
 		URI url = new URI(PaymentUrl);
-		return Response.temporaryRedirect(url);
+		return Response.temporaryRedirect(url).build();
 	}
 	
 	public String getEncodedParam(String param){
