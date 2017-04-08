@@ -58,14 +58,14 @@ public class TDKInstamojoService {
 		requestMap.put(InstamojoConstants.GRANT_TYPE_KEY, InstamojoConstants.GRANT_TYPE_VALUE);
 		String tokenUrl = InstamojoConstants.test_token_URL;
 		
-		if(isTest) {
+//		if(isTest) {
 			requestMap.put(InstamojoConstants.CLIENT_ID_KEY, testClientId);
 			requestMap.put(InstamojoConstants.CLIENT_SALT_KEY, testJavaSecret);
 			tokenUrl = "https://test.instamojo.com/oauth2/token/";
-		} else {
+		/*} else {
 			requestMap.put(InstamojoConstants.CLIENT_ID_KEY, javaClientId);
 			requestMap.put(InstamojoConstants.CLIENT_SALT_KEY, javaClientSecret);
-		}
+		}*/
 		
 		String response = HttpUtil.sendPostRequest(tokenUrl, null, requestMap);
 		System.out.println(response);
