@@ -168,7 +168,7 @@ public class TDKOrderService extends TDKServices {
 	}*/
 
 	@RequestMapping(value = "/weborder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Response webOrderNew(@RequestBody WebOrderTO order)
+	public @ResponseBody Response webOrderNew(@RequestBody WebOrderTO order)
 			throws JsonParseException, JsonMappingException, IOException, URISyntaxException {
 		UserAddress address = new UserAddress();
 		address.setUserId("7348815961");
