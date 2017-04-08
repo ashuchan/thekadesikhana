@@ -2,6 +2,8 @@ package com.dev.backend.service.controller;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.SecureRandom;
 import java.sql.Date;
 import java.time.Instant;
@@ -9,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -163,8 +167,8 @@ public class TDKOrderService extends TDKServices {
 	}*/
 
 	@RequestMapping(value = "/weborder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void webOrderNew(@RequestBody WebOrderTO order, HttpServletResponse response)
-			throws JsonParseException, JsonMappingException, IOException {
+	public ResponseBuilder webOrderNew(@RequestBody WebOrderTO order)
+			throws JsonParseException, JsonMappingException, IOException, URISyntaxException {
 		UserAddress address = new UserAddress();
 		address.setUserId("7348815961");
 		address.setAddressLine1(order.getUserInfo().getAddress());
@@ -185,7 +189,6 @@ public class TDKOrderService extends TDKServices {
 		if (!order.getPaymentType().equals("online")) {
 			orderTo.setIsCOD("t");
 			createOrder(orderTo);
-			return;
 		}
 
 		UserInfo user = order.getUserInfo();
@@ -210,7 +213,8 @@ public class TDKOrderService extends TDKServices {
 				+ "&data_readonly=data_amount&data_hidden=data_Field_96764&data_hidden=data_Field_78053";
 		System.out.println("Payment URL - " + PaymentUrl);
 		delegate.createOrderWithTransactions(orderObj, transactions);
-		response.sendRedirect(PaymentUrl);
+		URI url = new URI(PaymentUrl);
+		return Response.temporaryRedirect(url);
 	}
 
 	public Transaction createTransaction(int totalPrice, Order orderObj, String walletId, String transactionId,
