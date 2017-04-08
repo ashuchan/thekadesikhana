@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.sql.Date;
 import java.time.Instant;
@@ -208,13 +209,17 @@ public class TDKOrderService extends TDKServices {
 		transactions.add(createTransaction(order.getPrice(), orderObj, user.getContact(), transactionId,
 				TransactionCategory.GATEWAY));
 		String PaymentUrl = "https://www.instamojo.com/nandkumar90/thekadesikhana?embed=form&data_email="
-				+ user.getMail() + " &data_name=" + user.getName() + "&data_amount=" + order.getPrice() + "&data_phone="
-				+ user.getContact() + "&data_Field_78053=" + user.getAddress() + "&data_Field_96764=" + orderId
+				+ getEncodedParam(user.getMail()) + "&data_name=" + getEncodedParam(user.getName()) + "&data_amount=" + getEncodedParam(""+order.getPrice()) + "&data_phone="
+				+ getEncodedParam(user.getContact()) + "&data_Field_78053=" + getEncodedParam(user.getAddress()) + "&data_Field_96764=" + getEncodedParam(orderId)
 				+ "&data_readonly=data_amount&data_hidden=data_Field_96764&data_hidden=data_Field_78053";
 		System.out.println("Payment URL - " + PaymentUrl);
 		delegate.createOrderWithTransactions(orderObj, transactions);
 		URI url = new URI(PaymentUrl);
 		return Response.temporaryRedirect(url);
+	}
+	
+	public String getEncodedParam(String param){
+		return URLEncoder.encode(param);
 	}
 
 	public Transaction createTransaction(int totalPrice, Order orderObj, String walletId, String transactionId,
