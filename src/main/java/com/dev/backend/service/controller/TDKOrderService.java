@@ -140,7 +140,7 @@ public class TDKOrderService extends TDKServices {
 		return gatewayTO;
 	}
 
-	/*@RequestMapping(value = "/weborder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/weborder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody PaymentGatewayTO webOrder(@RequestBody WebOrderTO order)
 			throws JsonParseException, JsonMappingException, IOException {
 		OrderTransactionTO orderTo = new OrderTransactionTO();
@@ -165,9 +165,9 @@ public class TDKOrderService extends TDKServices {
 			orderTo.setIsCOD("f");
 
 		return createOrder(orderTo);
-	}*/
+	}
 
-	@RequestMapping(value = "/weborder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	/*@RequestMapping(value = "/weborder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Response webOrderNew(@RequestBody WebOrderTO order)
 			throws JsonParseException, JsonMappingException, IOException, URISyntaxException {
 		UserAddress address = new UserAddress();
@@ -217,7 +217,7 @@ public class TDKOrderService extends TDKServices {
 		URI url = new URI(PaymentUrl);
 		return Response.temporaryRedirect(url).build();
 	}
-	
+*/	
 	public String getEncodedParam(String param){
 		return URLEncoder.encode(param);
 	}
