@@ -135,7 +135,7 @@ public class TDKOrderService extends TDKServices {
 		return gatewayTO;
 	}
 
-	@RequestMapping(value = "/weborder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	/*@RequestMapping(value = "/weborder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody PaymentGatewayTO webOrder(@RequestBody WebOrderTO order)
 			throws JsonParseException, JsonMappingException, IOException {
 		OrderTransactionTO orderTo = new OrderTransactionTO();
@@ -160,7 +160,7 @@ public class TDKOrderService extends TDKServices {
 			orderTo.setIsCOD("f");
 
 		return createOrder(orderTo);
-	}
+	}*/
 
 	@RequestMapping(value = "/weborder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void webOrderNew(@RequestBody WebOrderTO order, HttpServletResponse response)
