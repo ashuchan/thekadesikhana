@@ -94,7 +94,9 @@ public class TDKInstamojoService {
 		params.put("amount", String.valueOf(paymentRequest.getAmount()));
 		params.put("redirect_url", "http://thekadesikhana.com/resources/views/thankYou.html");
 
-		String response = HttpUtil.sendPostRequest(InstamojoConstants.PAYMENT_API_URL, headers, params);
+		String response = HttpUtil.sendPostRequest("https://test.instamojo.com/v2/payment_requests/", headers, params);
+		
+		//String response = HttpUtil.sendPostRequest(InstamojoConstants.PAYMENT_API_URL, headers, params);
 		System.out.println(response);
 		InstamojoPaymentResponseTO responseObject = mapper.readValue(response, InstamojoPaymentResponseTO.class);
 		return responseObject;
