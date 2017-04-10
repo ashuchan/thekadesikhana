@@ -234,7 +234,7 @@ public class TDKOrderService extends TDKServices {
 		return transaction;
 	}
 	
-	@RequestMapping(value = "/gateway/order/{transactionId}", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/gateway/order/{transactionId}", method = RequestMethod.GET)
 	public @ResponseBody Order getOrderByTransaction(@PathVariable String transactionId) {
 		Order order = delegate.getOrderByTransaction(transactionId);
 		return order;
