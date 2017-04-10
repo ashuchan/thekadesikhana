@@ -255,4 +255,10 @@ public class DatabaseDelegateImpl implements DatabaseDelegate {
 		
 	}
 
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED)
+	public Order getOrderByTransaction(String transactionId) {
+		return orderDao.getOrderByTransaction(transactionId);
+	}
+
 }

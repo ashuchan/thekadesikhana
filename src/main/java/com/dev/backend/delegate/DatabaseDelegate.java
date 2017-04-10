@@ -61,4 +61,6 @@ public interface DatabaseDelegate {
 	int getTotalAddress();
 	
 	public void saveFeedback(Feedback feedback);
+
+	public Order getOrderByTransaction(String transactionId);
 }

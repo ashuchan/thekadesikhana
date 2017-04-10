@@ -233,6 +233,12 @@ public class TDKOrderService extends TDKServices {
 		transaction.setTransactionType(TransactionType.DEBIT);
 		return transaction;
 	}
+	
+	@RequestMapping(value = "/gateway/order/{transactionId}", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Order getOrderByTransaction(@PathVariable String transactionId) {
+		Order order = delegate.getOrderByTransaction(transactionId);
+		return order;
+	}
 
 	@RequestMapping(value = "/order/status", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody String updateOrderStatus(@RequestBody String orderId, @RequestBody String status) {

@@ -14,4 +14,6 @@ public interface OrderDao {
 
 	public String updateOrderStatus(String orderId, String status);
 
+	public Order getOrderByTransaction(String transactionId);
+
 }
