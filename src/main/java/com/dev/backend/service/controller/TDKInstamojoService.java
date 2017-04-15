@@ -93,7 +93,7 @@ public class TDKInstamojoService {
 		params.put("purpose", paymentRequest.getPurpose());
 		params.put("amount", String.valueOf(paymentRequest.getAmount()));
 		params.put("webhook_url", "http://107.23.59.43:8787/thekadesi/instamojo/webhook");
-		params.put("redirect_url", "http://thekadesikhana.com/resources/views/thankYou.html");
+//		params.put("redirect_url", "http://thekadesikhana.com/resources/views/thankYou.html");
 
 		String response = HttpUtil.sendPostRequest("https://test.instamojo.com/v2/payment_requests/", headers, params);
 		
