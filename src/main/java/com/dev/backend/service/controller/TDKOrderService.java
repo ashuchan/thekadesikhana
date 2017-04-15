@@ -206,7 +206,7 @@ public class TDKOrderService extends TDKServices {
 		orderObj.setUser("7348815961");
 		orderObj.setStatus(OrderStatus.ACCEPTED);
 		List<Transaction> transactions = new ArrayList<Transaction>();
-		transactions.add(createTransaction(order.getPrice(), orderObj, user.getContact(), transactionId,
+		transactions.add(createTransaction(order.getPrice(), orderObj, "7348815961", transactionId,
 				TransactionCategory.GATEWAY));
 		InstamojoPaymentTO paymentRequest = new InstamojoPaymentTO("" + order.getPrice(), user.getName(), user.getMail(),
 				user.getContact());
