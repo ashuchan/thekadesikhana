@@ -141,15 +141,15 @@ public class WebOrderTO {
 		this.paymentType = paymentType;
 	}
 
-	public int getPrice() {
-		return price;
+	public int getTotalDue() {
+		return totalDue;
 	}
 
-	public void setPrice(int price) {
-		this.price = price;
+	public void setTotalDue(int price) {
+		this.totalDue = price;
 	}
 
 	@JsonProperty
-	private int price;
+	private int totalDue;
 
 }
