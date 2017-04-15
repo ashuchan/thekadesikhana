@@ -203,7 +203,7 @@ public class TDKOrderService extends TDKServices {
 		orderObj.setOrderDate(new Date(Instant.now().toEpochMilli()));
 		orderObj.setOrderId(orderId);
 		orderObj.setTotalPrice(order.getPrice());
-		orderObj.setUser(user.getContact());
+		orderObj.setUser("7348815961");
 		orderObj.setStatus(OrderStatus.ACCEPTED);
 		List<Transaction> transactions = new ArrayList<Transaction>();
 		transactions.add(createTransaction(order.getPrice(), orderObj, user.getContact(), transactionId,
