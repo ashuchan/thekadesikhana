@@ -206,12 +206,15 @@ public class TDKOrderService extends TDKServices {
 		orderObj.setUser("7348815961");
 		orderObj.setStatus(OrderStatus.ACCEPTED);
 		List<Transaction> transactions = new ArrayList<Transaction>();
-		transactions.add(createTransaction(order.getPrice(), orderObj, "7348815961", transactionId,
-				TransactionCategory.GATEWAY));
 		InstamojoPaymentTO paymentRequest = new InstamojoPaymentTO("" + order.getPrice(), user.getName(), user.getMail(),
 				user.getContact());
+		InstamojoPaymentResponseTO response = TDKInstamojoService.createPayment(paymentRequest);
+		transactionId = response.getId();
+		paymentURL = response.getLongurl();
+		transactions.add(createTransaction(order.getPrice(), orderObj, "7348815961", transactionId,
+				TransactionCategory.GATEWAY));
 		delegate.createOrderWithTransactions(orderObj, transactions);
-		PaymentGatewayTO gatewayTO = new PaymentGatewayTO(orderId, paymentURL);
+		PaymentGatewayTO gatewayTO = new PaymentGatewayTO(orderId, response.getLongurl());
 		return gatewayTO;
 	}
 	
