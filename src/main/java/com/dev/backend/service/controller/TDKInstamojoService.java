@@ -20,6 +20,7 @@ import com.dev.backend.to.InstamojoPaymentResponseTO;
 import com.dev.backend.to.InstamojoPaymentTO;
 import com.dev.backend.util.HttpUtil;
 import com.dev.backend.util.InstamojoConstants;
+import com.dev.backend.util.MailUtil;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -122,10 +123,10 @@ public class TDKInstamojoService {
 		 * Extract payload from response Parse payment Status Update in database
 		 * Client poll should get updated
 		 */
-		
-		request.getParameterMap().keySet().forEach(k->{
-			System.out.println(k+"->"+request.getParameter(k));
-		});
+		String email = request.getParameter("buyer");
+		String name = request.getParameter("buyer_name");
+		String paymentId = request.getParameter("payment_request_id");
+		MailUtil.sendMail(name,email,paymentId);
 	}
 
 }

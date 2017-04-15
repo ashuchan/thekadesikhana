@@ -140,7 +140,7 @@ public class TDKOrderService extends TDKServices {
 		return gatewayTO;
 	}
 
-	@RequestMapping(value = "/weborder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	/*@RequestMapping(value = "/weborder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody PaymentGatewayTO webOrder(@RequestBody WebOrderTO order)
 			throws JsonParseException, JsonMappingException, IOException {
 		OrderTransactionTO orderTo = new OrderTransactionTO();
@@ -165,10 +165,10 @@ public class TDKOrderService extends TDKServices {
 			orderTo.setIsCOD("f");
 
 		return createOrder(orderTo);
-	}
+	}*/
 
-	/*@RequestMapping(value = "/weborder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Response webOrderNew(@RequestBody WebOrderTO order)
+	@RequestMapping(value = "/weborder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody PaymentGatewayTO webOrderNew(@RequestBody WebOrderTO order)
 			throws JsonParseException, JsonMappingException, IOException, URISyntaxException {
 		UserAddress address = new UserAddress();
 		address.setUserId("7348815961");
@@ -208,16 +208,13 @@ public class TDKOrderService extends TDKServices {
 		List<Transaction> transactions = new ArrayList<Transaction>();
 		transactions.add(createTransaction(order.getPrice(), orderObj, user.getContact(), transactionId,
 				TransactionCategory.GATEWAY));
-		String PaymentUrl = "https://www.instamojo.com/nandkumar90/thekadesikhana?embed=form&data_email="
-				+ getEncodedParam(user.getMail()) + "&data_name=" + getEncodedParam(user.getName()) + "&data_amount=" + getEncodedParam(""+order.getPrice()) + "&data_phone="
-				+ getEncodedParam(user.getContact()) + "&data_Field_78053=" + getEncodedParam(user.getAddress()) + "&data_Field_96764=" + getEncodedParam(orderId)
-				+ "&data_readonly=data_amount&data_hidden=data_Field_96764&data_hidden=data_Field_78053";
-		System.out.println("Payment URL - " + PaymentUrl);
+		InstamojoPaymentTO paymentRequest = new InstamojoPaymentTO("" + order.getPrice(), user.getName(), user.getMail(),
+				user.getContact());
 		delegate.createOrderWithTransactions(orderObj, transactions);
-		URI url = new URI(PaymentUrl);
-		return Response.temporaryRedirect(url).build();
+		PaymentGatewayTO gatewayTO = new PaymentGatewayTO(orderId, paymentURL);
+		return gatewayTO;
 	}
-*/	
+	
 	public String getEncodedParam(String param){
 		return URLEncoder.encode(param);
 	}

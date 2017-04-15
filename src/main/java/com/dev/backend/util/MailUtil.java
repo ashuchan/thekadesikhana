@@ -9,8 +9,8 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class MAilUtil {
-	public static void main(String[] args) {
+public class MailUtil {
+	public static void sendMail(String name, String email, String paymentId) {
 		Properties props = new Properties();
 		props.put("mail.smtp.host", "smtp.office365.com");
 		props.put("mail.smtp.starttls.enable", "true");
@@ -30,10 +30,12 @@ public class MAilUtil {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("sales@thekadesikhana.com"));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("ashusaxe007@gmail.com"));
-			message.setSubject("Testing Subject");
-			message.setText("Dear Mail Crawler," +
-					"\n\n No spam to my email, please!");
+					InternetAddress.parse(email));
+			message.setSubject("Order From Theka Desi Khana");
+			message.setText("Dear " + name +","+
+					"\n\n Your order with Theka Desi Khana is confirmed. Click on the link below to check for status."
+					+"\n\nhttp://thekadesikhana.com/resources/views/thankYou.html?payment_request_id="+paymentId+
+					"\n\n Regards,\nTheka Desi Khana");
 
 			Transport.send(message);
 
