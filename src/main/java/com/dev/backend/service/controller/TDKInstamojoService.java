@@ -128,6 +128,7 @@ public class TDKInstamojoService {
 		String email = request.getParameter("buyer");
 		String name = request.getParameter("buyer_name");
 		String paymentId = request.getParameter("payment_request_id");
+		System.out.println("Sending email :" + email+" :"+name+" :"+paymentId);
 		MailUtil.sendMail(name,email,paymentId);
 	}
 
