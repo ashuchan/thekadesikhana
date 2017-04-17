@@ -97,7 +97,7 @@ public class TDKOrderService extends TDKServices {
 		if (gatewayPrice > 0 && !isCod) {
 			InstamojoPaymentTO paymentRequest = null;
 			if (user.getPhone().equals("7348815961")) {
-				paymentRequest = new InstamojoPaymentTO("" + gatewayPrice, address.getName(), user.getEmail(),
+				paymentRequest = new InstamojoPaymentTO("" + gatewayPrice, address.getName(), order.getEmail(),
 						address.getMobileNumber());
 			} else {
 				paymentRequest = new InstamojoPaymentTO("" + gatewayPrice, user.getName(), user.getEmail(),
@@ -140,7 +140,7 @@ public class TDKOrderService extends TDKServices {
 		return gatewayTO;
 	}
 
-	/*@RequestMapping(value = "/weborder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/weborder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody PaymentGatewayTO webOrder(@RequestBody WebOrderTO order)
 			throws JsonParseException, JsonMappingException, IOException {
 		OrderTransactionTO orderTo = new OrderTransactionTO();
@@ -163,59 +163,8 @@ public class TDKOrderService extends TDKServices {
 
 		if (order.getPaymentType().equals("online"))
 			orderTo.setIsCOD("f");
-
+		orderTo.setEmail(order.getUserInfo().getMail());
 		return createOrder(orderTo);
-	}*/
-
-	@RequestMapping(value = "/weborder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PaymentGatewayTO webOrderNew(@RequestBody WebOrderTO order)
-			throws JsonParseException, JsonMappingException, IOException, URISyntaxException {
-		UserAddress address = new UserAddress();
-		address.setUserId("7348815961");
-		address.setAddressLine1(order.getUserInfo().getAddress());
-		address.setMobileNumber(order.getUserInfo().getContact());
-		address.setName(order.getUserInfo().getName());
-		delegate.createAddress(address);
-		OrderTransactionTO orderTo = new OrderTransactionTO();
-		orderTo.setUserId("7348815961"); // Sample Web Order User
-
-		orderTo.setAddressId("" + delegate.getTotalAddress());
-		order.getOrders().forEach(o -> {
-			MenuItem mi = new MenuItem();
-			mi.setMenuItem("" + o.getSku());
-			mi.setQuantity(o.getQuantity());
-			orderTo.getMenuItems().add(mi);
-		});
-
-		if (!order.getPaymentType().equals("online")) {
-			orderTo.setIsCOD("t");
-			createOrder(orderTo);
-		}
-
-		UserInfo user = order.getUserInfo();
-		String transactionId = null;
-		String orderId = null;
-		String paymentURL = null;
-		orderId = nextSessionId();
-
-		Order orderObj = new Order();
-		orderObj.setAddress(address);
-		orderObj.setOrderDate(new Date(Instant.now().toEpochMilli()));
-		orderObj.setOrderId(orderId);
-		orderObj.setTotalPrice(order.getTotalDue());
-		orderObj.setUser("7348815961");
-		orderObj.setStatus(OrderStatus.ACCEPTED);
-		List<Transaction> transactions = new ArrayList<Transaction>();
-		InstamojoPaymentTO paymentRequest = new InstamojoPaymentTO("" + order.getTotalDue(), user.getName(), user.getMail(),
-				user.getContact());
-		InstamojoPaymentResponseTO response = TDKInstamojoService.createPayment(paymentRequest);
-		transactionId = response.getId();
-		paymentURL = response.getLongurl();
-		transactions.add(createTransaction(order.getTotalDue(), orderObj, "7348815961", transactionId,
-				TransactionCategory.GATEWAY));
-		delegate.createOrderWithTransactions(orderObj, transactions);
-		PaymentGatewayTO gatewayTO = new PaymentGatewayTO(orderId, response.getLongurl());
-		return gatewayTO;
 	}
 	
 	public String getEncodedParam(String param){

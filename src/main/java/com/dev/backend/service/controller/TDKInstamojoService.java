@@ -88,11 +88,13 @@ public class TDKInstamojoService {
 		headers.put("Authorization", accessTokens.getTokenType() + " " + accessTokens.getAccessToken());
 		Map<String, String> params = new HashMap<>();
 
-		params.put("name", paymentRequest.getBuyer_name());
+		params.put("buyer_name", paymentRequest.getBuyer_name());
 		params.put("email", paymentRequest.getEmail());
 		params.put("phone", paymentRequest.getPhone());
 		params.put("purpose", paymentRequest.getPurpose());
 		params.put("amount", String.valueOf(paymentRequest.getAmount()));
+		params.put("send_email", "True");
+		params.put("send_sms", "True");
 		params.put("webhook", "http://107.23.59.43:8787/thekadesi/instamojo/webhook");
 		params.put("redirect_url", "http://thekadesikhana.com/resources/views/thankYou.html");
 

@@ -49,6 +49,8 @@ public class OrderTransactionTO {
 	@JsonProperty
 	private String addressId;
 	
+	private String email;
+	
 	@JsonProperty
 	private List<MenuItem> menuItems = new ArrayList<MenuItem>();
 
@@ -107,5 +109,13 @@ public class OrderTransactionTO {
 
 	public void setIsCOD(String isCOD) {
 		this.isCOD = isCOD;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }
